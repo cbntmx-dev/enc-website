@@ -1,0 +1,502 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-AU"><head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="user-scalable=0, width=device-width">
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+    <script>
+      // begin global configuration section
+      var diocese = 'maitland-newcastle'; // Diocese selection cookie
+      var baseUrl = 'https://cenet-mn.okta.com'; // Okta Domain
+      var orgUrl = 'https://dashboard-mn.cenet.catholic.edu.au'; // Okta Custom Domain
+      var userDomain = 'mn.catholic.edu.au'; // Default domain appended to username
+      var logo = 'https://login.cenet.catholic.edu.au/maitland-newcastle.png'; // logo URL, leave undefined or blank for okta hosted logo
+
+      // end global configuration section
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-125882623-14"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-125882623-14');
+    </script>
+    <script type="text/javascript" crossorigin="anonymous" src="https://login.cenet.catholic.edu.au/qr-scanner.legacy.min.js"></script><!--https://github.com/nimiq/qr-scanner-->
+    <script type="text/javascript" src="https://login.cenet.catholic.edu.au/pako.min.js"></script><!--https://github.com/nodeca/pako-->
+    <script type="text/javascript" src="https://login.cenet.catholic.edu.au/qrcode.min.js"></script><!--https://github.com/soldair/node-qrcode-->
+    <script type="text/javascript" src="https://login.cenet.catholic.edu.au/qrlogin.js"></script>
+
+    <!-- Styles generated from theme -->
+    <link href="/api/internal/brand/theme/style-sheet?touch-point=SIGN_IN_PAGE&amp;v=abc4780733b2999dc5536ea4bf18a7237d32beafe91e2f7611b8af3ecb8ae0d0dfb208992a3b1ecefd0c0f9333f4b59d" rel="stylesheet" type="text/css">
+    <!-- Favicon from theme -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>Diocese of Maitland-Newcastle - Sign In</title>
+    <!-- Core widget js and css -->
+<script type="text/javascript" src="https://ok7static.oktacdn.com/assets/js/sdk/okta-signin-widget/6.9.0/js/okta-sign-in.min.js" integrity="sha384-BFrw4NBalWjwoOn/uD6y1dD+IAHVjFQglnHKS/UudPaBGU8ZJD5dJKlmZNcoDBPl" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://ok7static.oktacdn.com/assets/js/sdk/okta-signin-widget/6.9.0/css/okta-sign-in.min.css" integrity="sha384-brQYBaq0vlLS0S4eEzyGfMUi31NgblWA/jvwZY1mRnQP3qdquYvOZ8IVou2cZ3AD" crossorigin="anonymous">
+
+<!-- Customizable css theme options. Link your own stylesheet or override styles inline. -->
+<link rel="stylesheet" type="text/css" href="" integrity="" crossorigin="anonymous">
+
+<!-- styles for custom sign in -->
+<link rel="stylesheet" type="text/css" href="https://ok7static.oktacdn.com/assets/loginpage/css/custom-signin.a91af2abfd04662e499bd3e151150dbf.css" integrity="sha384-BhMidK4jYIQaVFKNVHUvbfdgrt4NVlnlTZMsOMWLdWkme3j1JcshKDNQiMssd7sN" crossorigin="anonymous">
+
+
+<script type="text/javascript" nonce="">
+    window.onerror = function (msg, _url, _lineNo, _colNo, error) {
+        if (window.console && window.console.error) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.error(msg);
+            }
+        }
+
+        // Return true to suppress "Script Error" alerts in IE
+        return true;
+    };
+</script>
+
+    <script>
+      function getCookie(c_name) {
+        var i,x,y,ARRcookies=document.cookie.split(";");
+        for (i=0;i<ARRcookies.length;i++) {
+          x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+          y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+          x=x.replace(/^\s+|\s+$/g,"");
+          if (x==c_name) {
+            return unescape(y);
+          }
+        }
+      }
+      function setCookie(c_name,value) {
+        var exdays=365;
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+        document.cookie=c_name+"="+c_value+"; domain=cenet.catholic.edu.au; path=/";
+      }
+      //var qrlogin="true"; // force QR code always on for testing
+      var qrlogin=getCookie("qrlogin"); // visit https://login.cenet.catholic.edu.au/qrlogin.html to set
+    </script>
+    <style>
+body { margin: 0; }
+
+.prompt-wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 100%;
+  justify-content: center;
+  background-color: white;
+  border-right: 2px solid #144a7c;
+}
+
+.root {
+  background-color: #efefef;
+  width: 100%;
+  display: flex;
+  background-image: url('https://ok7static.oktacdn.com/fs/bco/7/fs0tfdyz0lt4vk1Dj357');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: none !important;
+  position: absolute;
+  height: 100%;
+  text-align: center;
+}
+
+@media only screen and (max-width: 480px) {
+  .prompt-wrapper {
+    /* width: 100%; */
+  }
+}
+
+#okta-sign-in.auth-container {
+  border-style: none;
+}
+
+#okta-sign-in .auth-header {
+    padding: 0px 0px 75px;
+}
+
+#okta-sign-in.no-beacon .auth-header {
+    padding-bottom: 0px;
+}
+
+#okta-sign-in .auth-org-logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 334px;
+    max-height: 225px;
+}
+
+#okta-sign-in .o-form-head {
+  display: none;
+}
+
+#continue {
+  display: block;
+  white-space: pre;
+  font-family: arial;
+  color: #184A7B;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: large;
+}
+
+a:hover path { filter: brightness(85%); transition: .6s fill;}
+a:focus path { filter: brightness(85%); transition: .6s fill;}
+a:hover text { filter: drop-shadow(0px 0px 5px #093b6e);}
+a:focus text { filter: drop-shadow(0px 0px 5px #093b6e);}
+
+#qrLogin {
+ display: none;
+ position: fixed;
+ bottom: 0;
+ left: 180px;
+}
+
+#qrGenerate {
+ display: none;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 10; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  font-family: proxima nova,montserrat,Arial,Helvetica,sans-serif;
+  color: #777;
+  text-align: center;
+}
+
+/* Modal Content/Box */
+.modal-content {
+ background-color: #fefefe;
+ margin: 15px auto; /* 15px from the top and centered */
+ padding: 20px;
+ border: 1px solid #888;
+ width: 350px; /* Could be more or less, depending on screen size */
+}
+
+.modal-content button {
+ font-family: proxima nova,montserrat-okta,Arial,Helvetica,sans-serif;
+ box-shadow: 0 1px 0 rgba(0,0,0,.15),inset 0 1px 0 0 hsla(0,0%,100%,.1);
+ height: 50px;
+ width: 49%;
+ font-size: 14px;
+ -webkit-appearance: none;
+ border: 1px solid;
+ border-radius: 3px;
+ box-sizing: border-box;
+ line-height: 36px;
+ padding: 0 15px;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+video {
+  object-fit: cover;
+  width: 350px;
+  height: 350px;
+}
+    </style>
+    <style type="text/css" media="print">
+.noPrint{
+  display: none;
+}
+    </style>
+  <script src="https://ok7static.oktacdn.com/assets/js/mvc/loginpage/initLoginPage.pack.f45aba2fcd86049fdc0a4446a0b4aa60.js" integrity="sha384-Ti1AVzmYlM/NMC9etUiz87VUWhwg+Bo9yxzyhSC6H+BcvWDdE/RfZIEFxIsvkfcf" crossorigin="anonymous"></script><style>
+  .imageye-selected {
+    outline: 2px solid black !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  }
+</style></head>
+  <body class="background">
+    <div id="login">
+      <div class="root">
+        <div class="prompt-wrapper">
+          <div id="outer-container">
+            <div id="okta-login-container"><main data-se="auth-container" tabindex="-1" id="okta-sign-in" class="auth-container main-container no-beacon" style="display: block;"><div class="okta-sign-in-header auth-header"><h1><img src="https://login.cenet.catholic.edu.au/maitland-newcastle.png" class="auth-org-logo" alt="Diocese of Maitland-Newcastle logo logo" aria-label="Diocese of Maitland-Newcastle logo logo"></h1><div data-type="beacon-container" class="beacon-container"></div></div><div class="auth-content"><div class="auth-content-inner"><div class="siw-main-view identify--okta_password primary-auth"><div class="siw-main-header"><div></div></div><div class="siw-main-body"><form method="POST" action="/app/dioceseofmaitlandnewcastle_loopbacksaml_1/exk28bj0pxV2nBbuq357/sso/saml" data-se="o-form" slot="content" id="form20" class="ion-form o-form o-form-edit-mode"><div data-se="o-form-content" class="o-form-content o-form-theme clearfix"><h2 data-se="o-form-head" class="okta-form-title o-form-head">Sign In</h2><div class="o-form-info-container"></div><div class="o-form-error-container" data-se="o-form-error-container"></div><div class="o-form-fieldset-container" data-se="o-form-fieldset-container"><div data-se="o-form-fieldset-identifier" class="o-form-fieldset o-form-label-top"><div data-se="o-form-label" class="okta-form-label o-form-label"><label for="input28">Username&nbsp;</label></div><div data-se="o-form-input-container" class="o-form-input"><span data-se="o-form-input-identifier" class="o-form-input-name-identifier o-form-control okta-form-input-field input-fix"><input type="text" placeholder="" name="identifier" id="input28" value="" aria-label="" autocomplete="identifier"></span></div></div><div data-se="o-form-fieldset-credentials.passcode" class="o-form-fieldset o-form-label-top"><div data-se="o-form-label" class="okta-form-label o-form-label"><label for="input36">Password&nbsp;</label></div><div data-se="o-form-input-container" class="o-form-input"><span data-se="o-form-input-credentials.passcode" class="o-form-input-name-credentials.passcode o-form-control okta-form-input-field input-fix"><input type="password" placeholder="" name="credentials.passcode" id="input36" value="" aria-label="" autocomplete="current-password" class="password-with-toggle"><span class="password-toggle"><span class="eyeicon visibility-16 button-show"></span><span class="eyeicon visibility-off-16 button-hide"></span></span></span></div></div></div></div><div class="o-form-button-bar"><input class="button button-primary" type="submit" value="Sign in" data-type="save"></div></form></div><div class="siw-main-footer"><div class="auth-footer"><a data-se="forgot-password" href="#" class="link js-forgot-password">Forgot password?</a><a data-se="unlock" href="#" class="link js-unlock">Unlock account?</a><a data-se="help" href="https://dashboard-mn.cenet.catholic.edu.au/help/login" class="link js-help">Help</a><a data-se="custom" href="https://login.cenet.catholic.edu.au/login.html?diocese" class="link js-custom">Wrong diocese?</a></div></div></div></div></div></main></div>
+            <div id="qrLogin"><img id="qr" src="https://login.cenet.catholic.edu.au/qr.svg" height="44" width="44"></div>
+          </div>
+        </div>
+      </div>
+      <script src="https://w8vxjtpzzgy4.statuspage.io/embed/script.js"></script>
+    </div><iframe src="https://w8vxjtpzzgy4.statuspage.io/embed/frame" title="CEnet Demo Status" aria-hidden="true" style="position: fixed; border: none; box-shadow: rgba(9, 20, 66, 0.25) 0px 20px 32px -8px; z-index: 9999; transition: left 1s, bottom 1s, right 1s; height: 115px; width: 320px; left: -9999px; right: -9999px; bottom: calc(100% - 175px);" tabindex="-1"></iframe>
+    <div id="previewModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="qrClose">×</span>
+        <p>Please allow camera access to scan</p>
+        <div class="video-container"><video id="preview"></video></div>
+        <div><button type="button" class="button button-primary" value="Register" id="qrGenerate">Register</button>
+        <button type="button" class="button button-primary" value="Cancel" id="qrCancel">Cancel</button></div>
+      </div>
+    </div>
+    <div id="badgeModal" class="modal">
+      <div class="modal-content">
+        <span class="close noPrint" id="badgeClose">×</span>
+        <p id="displayName"></p>
+        <div><canvas id="qrcode"></canvas></div>
+        <div class="noPrint"><button type="button" class="button button-primary" value="Print" id="qrPrint">Print</button>
+        <button type="button" class="button button-primary" value="Continue" id="qrContinue">Continue</button></div>
+      </div>
+    </div>
+    <!--
+        "OktaUtil" defines a global OktaUtil object
+        that contains methods used to complete the Okta login flow.
+     -->
+    
+
+<div id="inactive-tab-main-div" style="display:none;">
+    <div class="inactive-tab-container">
+        <div class="inactive-tab-header">
+            <img src="https://ok7static.oktacdn.com/fs/bco/1/fs0tfdyyzxjHZmuk0357" alt="Diocese of Maitland-Newcastle" class="report-org-logo">
+            <div class="divider"></div>
+        </div>
+        <div class="inactive-tab-content">
+            <h2 class="inactive-tab-content-title">The page has timed out</h2>
+            <p class="inactive-tab-details">If this page does not reload automatically, please refresh your browser.</p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" nonce="">
+  var signInSuccessCallBackFunction;
+  var oktaData = {"redirectUri":"\x2Fapp\x2Fdioceseofmaitlandnewcastle_loopbacksaml_1\x2Fexk28bj0pxV2nBbuq357\x2Fsso\x2Fsaml","isMobileSso":false,"orgSyncToAccountChooserEnabled":true,"fromUri":"","isMobileClientLogin":false,"requestContext":{"app":{"type":"object","value":{"name":"dioceseofmaitlandnewcastle_loopbacksaml_1","label":"Diocese\x20of\x20Maitland\x2DNewcastle","id":"0oa28bj0pyjaEwiUU357"}},"authentication":{"request":{},"protocol":{},"client":{"name":"dioceseofmaitlandnewcastle_loopbacksaml_1","label":"Diocese\x20of\x20Maitland\x2DNewcastle","id":"0oa28bj0pyjaEwiUU357"},"type":"object","value":{"request":{},"protocol":{}}},"target":{"clientId":"0oa28bj0pyjaEwiUU357","name":"dioceseofmaitlandnewcastle_loopbacksaml_1","label":"Diocese\x20of\x20Maitland\x2DNewcastle"}},"countryIso":"AU","inactiveTab":{"elementId":"inactive\x2Dtab\x2Dmain\x2Ddiv","avoidPageRefresh":true,"enabled":true},"signIn":{"logoText":"Diocese\x20of\x20Maitland\x2DNewcastle\x20logo","brandName":"Diocese\x20of\x20Maitland\x2DNewcastle","language":"en","consent":{"cancel":function(){window.location.href='https\x3A\x2F\x2Fdashboard\x2Dmn.cenet.catholic.edu.au\x2Flogin\x2Fstep\x2Dup\x2Fredirect\x3FstateToken\x3DeyJ6aXAiOiJERUYiLCJhbGlhcyI6ImVuY3J5cHRpb25rZXkiLCJ2ZXIiOiIxIiwib2lkIjoiMDBva2gybWhtaExpYkRjaEkzNTYiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..f\x2D0i1xNlzZZzvOWG.h1ySvCj6XPlXLD5bndYrC0IDThfW8oGFt2vDEJJSG9gruQWhs2eansc6C\x2DdP3zrnKzdLukRPTIyuzIqge\x2DSKKmu5aCuZaA4b6onRUNP1M8uLAun8hpuxMwOeMfflVggo0SnH3rVUv\x2Dn2oCIyn_Mb0MRRqi5Qxq3OmuIyYrlTELcjPLvR1VaDo3YffL_XlXPhgZni7pzhfsHUQK_NF7b9\x2Dc9Utw4fnSLzFACQpBV8BhNk7v_Ek0DaFfKZsjnNpH0xuGiB9eZ1logSkgPhpUjLbwIAKmoB8e_oVqai_KQnENUhtYu5vercHhrPxyQ8LpJkZhgF1Q9pCqwCKG1PmJuAbMothyhSKNadwReFAWHRP7xgLvfJ_\x2Dqk_aN4jaN38vjyokFZHI8ncOd7pDQzN9ju_xt39\x2Dq92pYT5g6Dy9IU8WhFOihzQAwMFuoMMz1KTuDmgus5NzIDBArWzpfuHatsIBNc80RWyBWzFdMMSgdd1HpDn4lzwBHzCVc8EXYfNSkYLwQUg27goyvGSBaOAkhRcO0jk1oSJUHJ40sw0MSU3AktGHDOjgtuzJ8QlVozAyjLj44o3FWgfRWseTYAeEADpiUN6RRxUlxuozRpBgWlDOkRRwKrdgyUmUeGThVyhcil0pnS\x2DtyU7RMEOJSjPINipLtAfYXruGmWwQjB49l4b\x2DZjiaex6OaclVThIyAJRQ6tMBQl0hCEOydH6oMEzECxQOgiyBNjELZBVTfYU\x2DI9qmkRTKTekTCibM6Kei\x2DAteViSrzwtEqeDiwbtbNO4ngCtj\x2DIMtC6_gpdJWamr_iGZXo0ER\x2DMPjBimyfbAhTqm7C\x2DwGrEhPZ5yTEP5V5NbdosExiTzlFZIUnQ2DgetEgQifYw8LkYsudn0dfXel5krCVqBklVh2tuHasOiMeH7\x2DPVCK4uX_hL8VAgFf0grfVHvlDjPojBfKPATbVCIp_yRgobBokbGH50FoNCSXvmBq57yTBMnwjLHDsvIpS2SuolCMdRt68IQUwvx7j64clrB4NgDqpL151CqrMjYO0drbs4J0MuC43Ii\x2DoVnpr8WfA1Xrks41uD9f_maD9b3XE3MM0HRfvc4KyGtlFuiavqURgxh_nekBnaidAZohzvQTWXcFmp14R0ocgHx\x2DO0XmKmGHGtcOzHBRhxjJYeBnUDawCkgHaxxvRDuyjic0Mn3PXtvy\x2DmSWLY5QV3YMWlpPwQtRmOHJ832I8qo3fsLSqLbEnVOXfbLKNhZRlq8uZxXw5BN73PA5_dVWcB7mpOA7UjyUqbDQbrKtbICh6BGgOynA7_U6kGGK\x2DyW7y2QFJxZvJPqJkF3Z\x2Dpk9X4oCZRa2cNGPmLR__vtjZQsaVLDnGbyiPut5mapaCJ88t4UyPqls_dF82yyIUmwXoKIQFXEpnzbD_PZryofF012_pEUsIW0K8BO44P1dRky8i2p9mS4Uy3NXYItt5XmPdjvv4sc_QUgG90rPIyW3nOJqABUerr2PwmHfqwN77cLwrrk5dmmRvhu7mOwShgLl7s41w5gH73JACusFdcstt6TA0KRXzGafjIQo3UQUWwi0SiA3wOTd12T4ZAQH5EbZJHttAaTW7UkynOGRru\x2DdEjfw12BzcybdPigc9KMPb0eoSfgOlBJSkzCpwLxtR8Rs6ZLrJ7JDgm0mLzop5GbpHDtEm7Ljjn6f\x2DPd7zpkouW\x2D5zEo6GWLu0HPznYCsiX6eWu3pCP3hNtXxf8tc5yOAkKsgNUxjgx\x2D_VjEEmQQDeAVJnyimaqvPTMHI\x2DqyX4w8h5oMgOidgzy5XtCxsrNAoGC2n7T7DJyTqKZyYkeOHqjRHsOJO80JclRocg9g4lDHhXcECMTp0_5QNuZRi9JnTYbds11VVA5AIIPD\x2DKGCscguIVEki1Tm4uA5WRWKtQ40xyfbsOwE_yZqa39SguSC7tAeoTrGP8rIgFEldJd6mm4Nn97meADy2OTJqlsvDfYNmNMj6XgNDoNViupzBci7za82dSo1_FqeWDPecDzGaz7BPEl4_FfROol3DcKSmoAWeLfJ7z20Lkv\x2DVWBLV\x2DnBCuE8YtTCh6gt1wszowpMVywXBCrMt3yOHqB0jpOm_\x2DkHcXp0WchmyNdS\x2DMQ1ccCouKIIEqyPlgmBTwjyJhbHUS5Yp78SUreN1XVwlltcVd71B6t_Q7JuGQ04uYzxOQnLTdhPLhH0on5g6XNAEATrbHLB1mx15uuHZAKKVUbj4vwOYDz\x2DCw1lf46sVuSmBl4UhTZBwq8rlRVh\x2DnsApDYyyLm9F8Yhs5OvBj61NBTFX2kwOlstF5MpHFuOzArEMod0o5c8SgZZImVpItHUOYNU3O937FBDCvrtCS3ngVcStSu7aegQrQIB3sxBK3RMjlc0VAiWQKNZMge4LzLyVno8elA2UIXrliJuJgf5l1g89GqY4pIElXnTH7d5GvJa5DzEmh\x2DQXzICALQm4V3SwoTdwkT1u4HAGWjnisAoXInRjP31yF1IeAxcSuvqO6Su9xEdNl5nF8E8w\x2Dc9vuUELZAhlLqNPimRLossG4PCf7tQq5W8EqqECLHfXlSy45GfPsTBOGsppgT1zyvQ20TYCWvYBwznwy8YNyUjWSBYDB0XY8398QYZVkI\x2DMvlPGnU1oFzfZ3yUNBkdZVhqXK7S9rJX3DjZND8iKy9iO2DFtzv_40mOQo32yZQmw_Dlw\x2DB7Yzv9Zo3jGu26yu4W8tcT1Zk9cpLTB6cBMNROY8GWA3gTVSve_ZQc_0UUI6r8ZaKV_3wKc7ejTqrB6rWwUeKpA5XHbwJklQOZRl9jvXLL73zTiyzNyO5NM2lw0htEDVkGOGTiLCGVEL0nAAVccAfkCsD2FJBNfEL8aWDgh2BZ66nzdOMIYgJ36iQOfVYO6QyJrXgUegUZqk6s2PMklOjzmnF7yY4xqZD7r1BERyxJFwKGTQke6AUavJr65gShRjVazfXNU4Ov2pqrt2QQn3qc1MqlsUYCylFTVUpNYM0armbrJV6YddCQz1FF2kEZ1OSJAzamDSsInrjND2t4cd\x2D0Z0DBes6VqLQobkn9Gv4oYiw4KqO1cgMvJKHtzmH3PMR7hbLvEbJsXlO6RFK\x2DrjMf68cwHb3N5d_bbQ0l6FJJmMiU5oqxMS5WIpMN76Gv\x2DPAAZmiyR6uqRqjqvXvPVw_Rb9jLaqIWjRfifVLaVcOA1m2BXB_fAV\x2DAPih8ISUqkVmu_WAbkQorbnI1IUtb5WrJWUXgAt_ZaNT1rlPcn371_8m\x2DpK\x2DmQM5iBuL\x2DUlFzhu59vjyNKE6KRpSWVW9bLU75CHAsVYulsc\x2D4xHp4z6OqP8oAMCKYwibeYqVq6pZrSDGyoy33EbAKyfk0ydc5\x2D5VrOOzo5FZSAjtzuqMVsYZVOL_YBvZN1ecNuBjFeb_K6iVr5dOT5jtA4mh5jatsfGnAnnPe0W_MYZXYT9gBMzimLGJ9sQhOuUi38xKfb23Vip8kHpCdvhDvYfDvaiVooN2O1NWOk4Ej2kJrdjb5qM4D2GD9tdAPAaA3Zc\x2Dw3Pi1J20SdCiAt8BpW_LNdCn6moa91g2A13fvM7Pm8NL25wgwJOB_FInQWO2gSVSSBRkB8s_sWbjK_qcoozWcvz7vg\x2Dbq\x2DCUHhy9MX9kyxPvrHNKahpxad\x2D4MG9c9HwgSPlzJB1iBA38ip_JyVTcyDbwrEAS56KSR6ZUEXcMVjn7ssSLNUhYslAh56PPNtGZemfGPHK5iyLAF8Xon0oInrH16ExxQR6WuE\x2D12yznhi2vEggnESumW7qpEgqTEi2uyezJlC8GVzbYPUcBTiAFLNfG9XRL4NHGVnfvpWzrvmpuztc7\x2Dz7R1Zw_kf3vGlB1Vx1INb3mi8wHhAIx73aYCBfZNoxn1BFq4zmHjroI99XuuzzjEzzVqSQPDyAthm4c5DFzERGF0JjCm_4Qcz5CzZt7XHqgX2LfWonZ1bvRcHjtMFs\x2DjavQE2r6xF5WD49kqmJbzOWwM00m2mTwE8f_8Ac0vP0ITDakQTjiKw6YmE0PSLQbcbQus1SnOXSME0QwIlqtbUIoPpQ6LHAC23HNtZAupiBZX4OmVJ6pl7TDTkEE4JbHAMMwkunUsH7ar6IhwU98gj0c8suEgW0fAinxbZUsnWzJKv0drVumopQ2zh8pa9lfJl8vsvorPMGzu9ApKQFcGhWzknbbKp\x2DHAJYwbUUJyVRVIjEL92qDN\x2Dfv8d_r3DBsbOH9OGF1uZI38sa5KNNBufEL8LbS8u9HLvmv45abx7ZlkQlw747koiLNUWLL7UwXd9KdibKK1DR\x2Dma_cuauybDxyy0QHkErfxjVWdy5S53ZH9mY1IB13uM7OmCnONsw_V9xyinnk__qbftnIjasMYUbPbuKHyOISw6oBC9CJu5MEXs1JR442NbcMJzM\x2DzY2iQdFDc_iCm5cd4H7yTbC4aBURLoRc55RSuHiqwCObyZdpbFneMIHVowJ8BD07bcraRo7ZbHypZWV18UEhBznoFPTQxVlF4okW7IhzJXCVgrYwJEFzt914jumiG0dFL5fhiWvqFVZ35gVwi59BrkwQYjOJWDTCanbVKDANyQu0k\x2DYonK1EvQERD6wrdNB0C371\x2DmjDoHyB5WyOxD\x2DcRhc1ADFFLbaNjKQiiyx3LuciusLSTXd2YxJac4wRPBoa0YvM5tCyay8VgJ4ddX2T7Ag3x0uNw_WQwjOnTuCQblyp0Hw1WcswG61Uer02LIfWDj_RbZR6RHr08bwdFH4tCg6iDOdd2SGaZFtR\x2DX\x2Du9kj1IfHWrAGJvf7JaWkYLzs0n9rrZq5Kgri8FG28V7Wytk6Nb1M9\x2DMqqHTgK3i9aVHiEh4NZmTeZvu6Of7LAHo2uURRgIKSxlu6\x2DJtM\x2DGb5Q22C_mkVkD6WwYaNtAlpECDgl71VkMrIAaAoCsB6oETX1SP0JwSlHEQaeZdfuxZUUoWGtVLu\x2DPu4Qenvip0tGfMX0I32lMNDqL12NtlY_4Dx1uDOeCUiSV02dGAWgF_0oYLGQl\x2DzWR7g8ECjFbm6oVzQszrBP8ovqQ464oncWEHf\x2DN1y4\x2DwQjnhDrpEK_uD_1ZBpEtjMfKwKgTS\x2D7SF1ohDJQmSAASzdGD\x2DeahIFfEE4A2Bcbb\x2DqUmFWV\x2D4Ws5jfQISVyAWtrtd6gu0aCr\x2DakABwkvETiVD2Wmon5CxGKq47gP_y3at\x2DhBOeSWjYa.qor3vpO3YEpgTbX9kgi_6A';}},"i18n":{"en":{"mfa.challenge.password.placeholder":"Password","help":"Help","password.forgot.email.or.username.tooltip":"Email\x20or\x20Username","needhelp":"Need\x20help\x20signing\x20in\x3F","primaryauth.username.placeholder":"Username","password.forgot.email.or.username.placeholder":"Email\x20or\x20Username","account.unlock.email.or.username.tooltip":"Email\x20or\x20Username","unlockaccount":"Unlock\x20account\x3F","account.unlock.email.or.username.placeholder":"Email\x20or\x20Username","primaryauth.password.placeholder":"Password","primaryauth.title":"Sign\x20In","forgotpassword":"Forgot\x20password\x3F"}},"features":{"isBotProtectionEnabled":false,"hideSignOutLinkInMFA":false,"emailRecovery":false,"deviceFingerprinting":true,"showIdentifier":true,"consent":true,"useDeviceFingerprintForSecurityImage":true,"customExpiredPassword":true,"router":true,"showPasswordToggleOnSignInPage":true,"securityImage":false,"autoPush":true,"smsRecovery":true,"idpDiscovery":false,"selfServiceUnlock":true,"webauthn":true,"passwordlessAuth":true,"showPasswordRequirementsAsHtmlList":true,"registration":false,"rememberMe":false,"callRecovery":false,"multiOptionalFactorEnroll":true},"baseUrl":"https\x3A\x2F\x2Fdashboard\x2Dmn.cenet.catholic.edu.au","assets":{"baseUrl":"https\x3A\x2F\x2Fok7static.oktacdn.com\x2Fassets\x2Fjs\x2Fsdk\x2Fokta\x2Dsignin\x2Dwidget\x2F6.9.0"},"customButtons":[],"idpDiscovery":{"requestContext":""},"logo":"https\x3A\x2F\x2Fok7static.oktacdn.com\x2Ffs\x2Fbco\x2F1\x2Ffs0tfdyyzxjHZmuk0357","stateToken":"eyJ6aXAiOiJERUYiLCJhbGlhcyI6ImVuY3J5cHRpb25rZXkiLCJ2ZXIiOiIxIiwib2lkIjoiMDBva2gybWhtaExpYkRjaEkzNTYiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..f\x2D0i1xNlzZZzvOWG.h1ySvCj6XPlXLD5bndYrC0IDThfW8oGFt2vDEJJSG9gruQWhs2eansc6C\x2DdP3zrnKzdLukRPTIyuzIqge\x2DSKKmu5aCuZaA4b6onRUNP1M8uLAun8hpuxMwOeMfflVggo0SnH3rVUv\x2Dn2oCIyn_Mb0MRRqi5Qxq3OmuIyYrlTELcjPLvR1VaDo3YffL_XlXPhgZni7pzhfsHUQK_NF7b9\x2Dc9Utw4fnSLzFACQpBV8BhNk7v_Ek0DaFfKZsjnNpH0xuGiB9eZ1logSkgPhpUjLbwIAKmoB8e_oVqai_KQnENUhtYu5vercHhrPxyQ8LpJkZhgF1Q9pCqwCKG1PmJuAbMothyhSKNadwReFAWHRP7xgLvfJ_\x2Dqk_aN4jaN38vjyokFZHI8ncOd7pDQzN9ju_xt39\x2Dq92pYT5g6Dy9IU8WhFOihzQAwMFuoMMz1KTuDmgus5NzIDBArWzpfuHatsIBNc80RWyBWzFdMMSgdd1HpDn4lzwBHzCVc8EXYfNSkYLwQUg27goyvGSBaOAkhRcO0jk1oSJUHJ40sw0MSU3AktGHDOjgtuzJ8QlVozAyjLj44o3FWgfRWseTYAeEADpiUN6RRxUlxuozRpBgWlDOkRRwKrdgyUmUeGThVyhcil0pnS\x2DtyU7RMEOJSjPINipLtAfYXruGmWwQjB49l4b\x2DZjiaex6OaclVThIyAJRQ6tMBQl0hCEOydH6oMEzECxQOgiyBNjELZBVTfYU\x2DI9qmkRTKTekTCibM6Kei\x2DAteViSrzwtEqeDiwbtbNO4ngCtj\x2DIMtC6_gpdJWamr_iGZXo0ER\x2DMPjBimyfbAhTqm7C\x2DwGrEhPZ5yTEP5V5NbdosExiTzlFZIUnQ2DgetEgQifYw8LkYsudn0dfXel5krCVqBklVh2tuHasOiMeH7\x2DPVCK4uX_hL8VAgFf0grfVHvlDjPojBfKPATbVCIp_yRgobBokbGH50FoNCSXvmBq57yTBMnwjLHDsvIpS2SuolCMdRt68IQUwvx7j64clrB4NgDqpL151CqrMjYO0drbs4J0MuC43Ii\x2DoVnpr8WfA1Xrks41uD9f_maD9b3XE3MM0HRfvc4KyGtlFuiavqURgxh_nekBnaidAZohzvQTWXcFmp14R0ocgHx\x2DO0XmKmGHGtcOzHBRhxjJYeBnUDawCkgHaxxvRDuyjic0Mn3PXtvy\x2DmSWLY5QV3YMWlpPwQtRmOHJ832I8qo3fsLSqLbEnVOXfbLKNhZRlq8uZxXw5BN73PA5_dVWcB7mpOA7UjyUqbDQbrKtbICh6BGgOynA7_U6kGGK\x2DyW7y2QFJxZvJPqJkF3Z\x2Dpk9X4oCZRa2cNGPmLR__vtjZQsaVLDnGbyiPut5mapaCJ88t4UyPqls_dF82yyIUmwXoKIQFXEpnzbD_PZryofF012_pEUsIW0K8BO44P1dRky8i2p9mS4Uy3NXYItt5XmPdjvv4sc_QUgG90rPIyW3nOJqABUerr2PwmHfqwN77cLwrrk5dmmRvhu7mOwShgLl7s41w5gH73JACusFdcstt6TA0KRXzGafjIQo3UQUWwi0SiA3wOTd12T4ZAQH5EbZJHttAaTW7UkynOGRru\x2DdEjfw12BzcybdPigc9KMPb0eoSfgOlBJSkzCpwLxtR8Rs6ZLrJ7JDgm0mLzop5GbpHDtEm7Ljjn6f\x2DPd7zpkouW\x2D5zEo6GWLu0HPznYCsiX6eWu3pCP3hNtXxf8tc5yOAkKsgNUxjgx\x2D_VjEEmQQDeAVJnyimaqvPTMHI\x2DqyX4w8h5oMgOidgzy5XtCxsrNAoGC2n7T7DJyTqKZyYkeOHqjRHsOJO80JclRocg9g4lDHhXcECMTp0_5QNuZRi9JnTYbds11VVA5AIIPD\x2DKGCscguIVEki1Tm4uA5WRWKtQ40xyfbsOwE_yZqa39SguSC7tAeoTrGP8rIgFEldJd6mm4Nn97meADy2OTJqlsvDfYNmNMj6XgNDoNViupzBci7za82dSo1_FqeWDPecDzGaz7BPEl4_FfROol3DcKSmoAWeLfJ7z20Lkv\x2DVWBLV\x2DnBCuE8YtTCh6gt1wszowpMVywXBCrMt3yOHqB0jpOm_\x2DkHcXp0WchmyNdS\x2DMQ1ccCouKIIEqyPlgmBTwjyJhbHUS5Yp78SUreN1XVwlltcVd71B6t_Q7JuGQ04uYzxOQnLTdhPLhH0on5g6XNAEATrbHLB1mx15uuHZAKKVUbj4vwOYDz\x2DCw1lf46sVuSmBl4UhTZBwq8rlRVh\x2DnsApDYyyLm9F8Yhs5OvBj61NBTFX2kwOlstF5MpHFuOzArEMod0o5c8SgZZImVpItHUOYNU3O937FBDCvrtCS3ngVcStSu7aegQrQIB3sxBK3RMjlc0VAiWQKNZMge4LzLyVno8elA2UIXrliJuJgf5l1g89GqY4pIElXnTH7d5GvJa5DzEmh\x2DQXzICALQm4V3SwoTdwkT1u4HAGWjnisAoXInRjP31yF1IeAxcSuvqO6Su9xEdNl5nF8E8w\x2Dc9vuUELZAhlLqNPimRLossG4PCf7tQq5W8EqqECLHfXlSy45GfPsTBOGsppgT1zyvQ20TYCWvYBwznwy8YNyUjWSBYDB0XY8398QYZVkI\x2DMvlPGnU1oFzfZ3yUNBkdZVhqXK7S9rJX3DjZND8iKy9iO2DFtzv_40mOQo32yZQmw_Dlw\x2DB7Yzv9Zo3jGu26yu4W8tcT1Zk9cpLTB6cBMNROY8GWA3gTVSve_ZQc_0UUI6r8ZaKV_3wKc7ejTqrB6rWwUeKpA5XHbwJklQOZRl9jvXLL73zTiyzNyO5NM2lw0htEDVkGOGTiLCGVEL0nAAVccAfkCsD2FJBNfEL8aWDgh2BZ66nzdOMIYgJ36iQOfVYO6QyJrXgUegUZqk6s2PMklOjzmnF7yY4xqZD7r1BERyxJFwKGTQke6AUavJr65gShRjVazfXNU4Ov2pqrt2QQn3qc1MqlsUYCylFTVUpNYM0armbrJV6YddCQz1FF2kEZ1OSJAzamDSsInrjND2t4cd\x2D0Z0DBes6VqLQobkn9Gv4oYiw4KqO1cgMvJKHtzmH3PMR7hbLvEbJsXlO6RFK\x2DrjMf68cwHb3N5d_bbQ0l6FJJmMiU5oqxMS5WIpMN76Gv\x2DPAAZmiyR6uqRqjqvXvPVw_Rb9jLaqIWjRfifVLaVcOA1m2BXB_fAV\x2DAPih8ISUqkVmu_WAbkQorbnI1IUtb5WrJWUXgAt_ZaNT1rlPcn371_8m\x2DpK\x2DmQM5iBuL\x2DUlFzhu59vjyNKE6KRpSWVW9bLU75CHAsVYulsc\x2D4xHp4z6OqP8oAMCKYwibeYqVq6pZrSDGyoy33EbAKyfk0ydc5\x2D5VrOOzo5FZSAjtzuqMVsYZVOL_YBvZN1ecNuBjFeb_K6iVr5dOT5jtA4mh5jatsfGnAnnPe0W_MYZXYT9gBMzimLGJ9sQhOuUi38xKfb23Vip8kHpCdvhDvYfDvaiVooN2O1NWOk4Ej2kJrdjb5qM4D2GD9tdAPAaA3Zc\x2Dw3Pi1J20SdCiAt8BpW_LNdCn6moa91g2A13fvM7Pm8NL25wgwJOB_FInQWO2gSVSSBRkB8s_sWbjK_qcoozWcvz7vg\x2Dbq\x2DCUHhy9MX9kyxPvrHNKahpxad\x2D4MG9c9HwgSPlzJB1iBA38ip_JyVTcyDbwrEAS56KSR6ZUEXcMVjn7ssSLNUhYslAh56PPNtGZemfGPHK5iyLAF8Xon0oInrH16ExxQR6WuE\x2D12yznhi2vEggnESumW7qpEgqTEi2uyezJlC8GVzbYPUcBTiAFLNfG9XRL4NHGVnfvpWzrvmpuztc7\x2Dz7R1Zw_kf3vGlB1Vx1INb3mi8wHhAIx73aYCBfZNoxn1BFq4zmHjroI99XuuzzjEzzVqSQPDyAthm4c5DFzERGF0JjCm_4Qcz5CzZt7XHqgX2LfWonZ1bvRcHjtMFs\x2DjavQE2r6xF5WD49kqmJbzOWwM00m2mTwE8f_8Ac0vP0ITDakQTjiKw6YmE0PSLQbcbQus1SnOXSME0QwIlqtbUIoPpQ6LHAC23HNtZAupiBZX4OmVJ6pl7TDTkEE4JbHAMMwkunUsH7ar6IhwU98gj0c8suEgW0fAinxbZUsnWzJKv0drVumopQ2zh8pa9lfJl8vsvorPMGzu9ApKQFcGhWzknbbKp\x2DHAJYwbUUJyVRVIjEL92qDN\x2Dfv8d_r3DBsbOH9OGF1uZI38sa5KNNBufEL8LbS8u9HLvmv45abx7ZlkQlw747koiLNUWLL7UwXd9KdibKK1DR\x2Dma_cuauybDxyy0QHkErfxjVWdy5S53ZH9mY1IB13uM7OmCnONsw_V9xyinnk__qbftnIjasMYUbPbuKHyOISw6oBC9CJu5MEXs1JR442NbcMJzM\x2DzY2iQdFDc_iCm5cd4H7yTbC4aBURLoRc55RSuHiqwCObyZdpbFneMIHVowJ8BD07bcraRo7ZbHypZWV18UEhBznoFPTQxVlF4okW7IhzJXCVgrYwJEFzt914jumiG0dFL5fhiWvqFVZ35gVwi59BrkwQYjOJWDTCanbVKDANyQu0k\x2DYonK1EvQERD6wrdNB0C371\x2DmjDoHyB5WyOxD\x2DcRhc1ADFFLbaNjKQiiyx3LuciusLSTXd2YxJac4wRPBoa0YvM5tCyay8VgJ4ddX2T7Ag3x0uNw_WQwjOnTuCQblyp0Hw1WcswG61Uer02LIfWDj_RbZR6RHr08bwdFH4tCg6iDOdd2SGaZFtR\x2DX\x2Du9kj1IfHWrAGJvf7JaWkYLzs0n9rrZq5Kgri8FG28V7Wytk6Nb1M9\x2DMqqHTgK3i9aVHiEh4NZmTeZvu6Of7LAHo2uURRgIKSxlu6\x2DJtM\x2DGb5Q22C_mkVkD6WwYaNtAlpECDgl71VkMrIAaAoCsB6oETX1SP0JwSlHEQaeZdfuxZUUoWGtVLu\x2DPu4Qenvip0tGfMX0I32lMNDqL12NtlY_4Dx1uDOeCUiSV02dGAWgF_0oYLGQl\x2DzWR7g8ECjFbm6oVzQszrBP8ovqQ464oncWEHf\x2DN1y4\x2DwQjnhDrpEK_uD_1ZBpEtjMfKwKgTS\x2D7SF1ohDJQmSAASzdGD\x2DeahIFfEE4A2Bcbb\x2DqUmFWV\x2D4Ws5jfQISVyAWtrtd6gu0aCr\x2DakABwkvETiVD2Wmon5CxGKq47gP_y3at\x2DhBOeSWjYa.qor3vpO3YEpgTbX9kgi_6A","helpLinks":{"help":"","forgotPassword":"","unlock":"","custom":[]},"piv":{}},"accountChooserDiscoveryUrl":"https\x3A\x2F\x2Flogin.okta.com\x2Fdiscovery\x2Fiframe.html"};
+
+  var runLoginPage = function(fn) {
+    var mainScript = document.createElement('script');
+    mainScript.src = "https://ok7static.oktacdn.com/assets/js/mvc/loginpage/initLoginPage.pack.f45aba2fcd86049fdc0a4446a0b4aa60.js";
+    mainScript.integrity = "sha384-Ti1AVzmYlM/NMC9etUiz87VUWhwg+Bo9yxzyhSC6H+BcvWDdE/RfZIEFxIsvkfcf";
+    mainScript.crossOrigin = "anonymous";
+    document.getElementsByTagName('head')[0].appendChild(mainScript);
+    fn && mainScript.addEventListener('load', function () { setTimeout(fn, 1) });
+  };
+
+  var OktaUtil = {
+    _addClass: function(el, className) {
+      if(el) {
+        var elementClasses = el.className.split(" ");
+        if (elementClasses.indexOf(className) == -1) {
+          el.className += " " + className;
+        }
+      }
+    },
+
+    _removeElement: function(el) {
+      if(el) {
+        el.parentNode.removeChild(el);
+      }
+    },
+
+    _hideElement: function(el) {
+      if(el) {
+        el.style.display = 'none';
+      }
+    },
+
+    _isDocumentVisible: function() {
+      return document.visibilityState === 'visible';
+    },
+
+    addLoginContainerClass: function () {
+      this._addClass(document.getElementById('okta-login-container'), 'login-container');
+    },
+
+    showUnsupportedCookieWarning: function () {
+      document.getElementById('okta-sign-in').removeAttribute('style');
+      document.getElementById('unsupported-cookie').removeAttribute('style');
+    },
+
+    removeUnsupportedCookieWarning: function () {
+      this._removeElement(document.getElementById('okta-sign-in'));
+    },
+
+    hideOktaLoginContainer: function () {
+      this._hideElement(document.getElementById('okta-login-container'));
+    },
+
+    isChromeOs:  function () {
+      return /\bCrOS\b/.test(navigator.userAgent);
+    },
+
+    addChromeOSScript: function() {
+      var chromeOSScript = document.createElement('script');
+      chromeOSScript.src = "/js/google/users-1.0.js";
+      document.getElementsByTagName('head')[0].appendChild(chromeOSScript);
+    },
+
+    getSignInWidgetConfig: function () {
+        if (oktaData.inactiveTab && oktaData.inactiveTab.enabled && !this._isDocumentVisible() && !oktaData.inactiveTab.avoidPageRefresh) {
+            // Show a loading state and wait for the visibility event
+            this.hideOktaLoginContainer();
+            // remove stateToken so SIW does not attempt a login flow
+            oktaData.signIn.stateToken = undefined;
+        }
+        return oktaData.signIn;
+    },
+
+    completeLogin: function (res) {
+      signInSuccessCallBackFunction(res);
+    },
+
+    getRequestContext: function () {
+      return oktaData.requestContext;
+    },
+
+    setRedirectUri: function (uri) {
+      oktaData.redirectUri = uri;
+    },
+
+    init: function () {
+      if (!navigator.cookieEnabled) {
+        this.showUnsupportedCookieWarning();
+        this.hideOktaLoginContainer();
+      } else {
+        this.removeUnsupportedCookieWarning();
+
+        if (oktaData.inactiveTab && oktaData.inactiveTab.enabled && !this._isDocumentVisible()) {
+          try {
+            oktaData.inactiveTab.renderFnBackup = OktaSignIn.prototype.renderEl;
+          } catch (err) {
+            // no op - graceful handling OktaSignIn undefined case
+          }
+
+          // pause render sign-in widget when browser tab is inactive
+          if (!oktaData.inactiveTab.renderFnBackup) {
+            // for older SIW, renderFnBackup is undefined, fallback to full page reload
+            oktaData.inactiveTab.fallbackFullPageReload = true;
+            // Show a loading state and wait for the visibility event
+            this.hideOktaLoginContainer();
+            // remove stateToken so SIW does not attempt a login flow
+            oktaData.signIn.stateToken = undefined;
+          } else {
+            // for newer SIW, override renderEl function so SIW does not attempt a login flow
+            OktaSignIn.prototype.renderEl = function () {
+              oktaData.inactiveTab.renderArgsBackup = arguments;
+              oktaData.inactiveTab.signInInstance = this;
+              try {
+                return new Promise(function (resolve, reject) {
+                  oktaData.inactiveTab.renderResolve = resolve;
+                  oktaData.inactiveTab.renderReject = reject;
+                });
+              } catch (err) {
+                // return nothing if promise is not supported, since promise chaining won't work anyway
+              }
+            }
+          }
+
+          // event handler to resume render sign-in widget
+          document.addEventListener('visibilitychange', function checkVisibilityAndCallSuccess() {
+            if (document.visibilityState === 'visible') {
+              try {
+                document.removeEventListener('visibilitychange', checkVisibilityAndCallSuccess);
+                const inactiveTabDiv = document.getElementById(oktaData.inactiveTab.elementId);
+                inactiveTabDiv.style.display = 'none';
+
+                // resume render sign-in widget
+                if (oktaData.inactiveTab.renderFnBackup && oktaData.inactiveTab.renderArgsBackup) {
+                  OktaSignIn.prototype.renderEl = oktaData.inactiveTab.renderFnBackup;
+                  var result = oktaData.inactiveTab.signInInstance.renderEl.apply(oktaData.inactiveTab.signInInstance, oktaData.inactiveTab.renderArgsBackup);
+                  if (result && result.then) {
+                    result.then(oktaData.inactiveTab.renderResolve, oktaData.inactiveTab.renderReject);
+                  }
+                }
+              } catch (err) {
+                oktaData.inactiveTab.fallbackFullPageReload = true;
+              }
+              if (oktaData.inactiveTab.fallbackFullPageReload) {
+                location.reload();
+              }
+            }
+          });
+        }
+
+        // add class if app login banner is present
+        if (oktaData.isAppBannerVisible) {
+          this.addLoginContainerClass();
+        }
+
+        oktaData.isCustomSignIn = true;
+        oktaData.hasChromeOSFeature = this.isChromeOs();
+        if (oktaData.hasChromeOSFeature) {
+          this.addChromeOSScript();
+        }
+        runLoginPage(function () {
+          var res = OktaLogin.initLoginPage(oktaData);
+          oktaData.signIn = res.signIn;
+          signInSuccessCallBackFunction = res.signInSuccessCallbackFn;
+
+        });
+      }
+    }
+  };
+  OktaUtil.init();
+  //# sourceURL=OktaUtil.js
+</script>
+
+
+
+    <script type="text/javascript">
+      // "config" object contains default widget configuration
+      // with any custom overrides defined in your admin settings.
+      var config = OktaUtil.getSignInWidgetConfig();
+      if (config.relayState&&config.relayState.startsWith(baseUrl)) {
+        config.relayState = config.relayState.replace(baseUrl,orgUrl);
+        document.location = config.relayState;
+      }
+      var context = OktaUtil.getRequestContext();
+      // set diocese cookie for anything other than org2org to avoid accidental lockout from diocese selection
+      if(context&&context.app&&context.app.value&&context.app.value.name&&context.app.value.name!='okta_org2org') setCookie('diocese',diocese); // OIE
+      if(context&&context.target&&context.target.name&&context.target.name!='okta_org2org') setCookie('diocese',diocese); // Classic
+      //if(context&&context.app&&context.app.value&&context.app.value.name&&context.app.value.name=='cenet-cg_gsuitestudents_1') qrlogin="true";
+      config.transformUsername = function (username, operation) {
+        return username.replace('mnstu.catholic.edu.au',userDomain).replace('affiliate.mn.catholic.org.au',userDomain).replace('mn.catholic.org.au',userDomain).replace('catholiccare.org.au',userDomain).replace('rosewoodcentre.com.au',userDomain).replace('stnicholasmn.org.au',userDomain).replace('healingandsupport.org.au',userDomain).replace('huntercommunityhousing.com.au',userDomain)+((username.indexOf('@')===-1)?'@'+userDomain:'');
+      };
+      config.helpLinks = {custom:[{
+        text: 'Wrong diocese?',
+        href: 'https://login.cenet.catholic.edu.au/login.html?diocese'
+      }]};
+      if(window.logo) config.logo = logo;
+
+      // Render the Okta Sign-In Widget
+      var oktaSignIn = new OktaSignIn(config);
+      oktaSignIn.on('afterRender', function(context){
+      	if(context.controller==="registration") document.getElementsByName('userProfile.AUP')[0].nextSibling.innerHTML = 'By clicking this box you acknowledge that you<br>  understand your rights and obligations under the<br> <a id="aupLink" target="_blank" style="color: #0000EE"  href="#"> Acceptable Use of Technology Policy (AUTP).</a>';
+      	enableQR(context);
+      });
+      oktaSignIn.renderEl({ el: '#okta-login-container' },
+        OktaUtil.completeLogin, // never called...
+        function(error) {
+          // Logs errors that occur when configuring the widget.
+          window.console && console.log(error.message, error);
+        }
+      );
+    </script>
+  
+<iframe id="account-chooser-iframe" data-se="account-chooser" class="hide" src="https://login.okta.com/discovery/iframe.html"></iframe><div id="give-freely-root-ejkiikneibegknkgimmihdpcbcedgmpo" class="give-freely-root" data-extension-id="ejkiikneibegknkgimmihdpcbcedgmpo" data-extension-name="Volume Booster" style="display: block;"></div></body></html>
