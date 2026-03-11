@@ -1,0 +1,671 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-AU"><head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta http-equiv="Content-Language" content="en">
+        <meta name="viewport" content="user-scalable=0, width=device-width">
+        <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+        <script src="https://global.oktacdn.com/okta-signin-widget/7.1.3/js/okta-sign-in.min.js" type="text/javascript"></script>
+        <link href="https://global.oktacdn.com/okta-signin-widget/7.1.3/css/okta-sign-in.min.css" type="text/css" rel="stylesheet">
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+        <title>Login to CEnet</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-125882623-14"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-125882623-14');
+        </script>
+        <script>
+const getDio = {
+  "armidale":"arm",
+  "bathurst":"bat",
+  "brokenbay":"dbb",
+  "cairns":"cns",
+  "canberra-goulburn":"cg",
+  "cenet":"hq",
+  "darwin":"nt",
+  "lismore":"lis",
+  "maitland-newcastle":"mn",
+  "parramatta":"par",
+  "dioceseofparramatta":"par",
+  "rockhampton":"rok",
+  "sydney":"syd",
+  "tasmania":"tas",
+  "toowoomba":"too",
+  "townsville":"tsv",
+  "waggawagga":"wag",
+  "wilcannia-forbes":"wf",
+  "wollongong":"wol",
+  "external":"ext",
+  "preview":"preview",
+  "sydpreview":"sydpreview",
+  "cgpreview":"cgpreview"
+}
+// AUP Prerequisites: user editable okta profile attribute 'aupAccepted' (string yes/no). Bookmark App (with MFA) to orgUrl+'/signin/?aup=yes'
+// Link to the AUP document shown in modal (externally hosted)
+const getAUPLink = {
+  "arm":"",
+  "bat":"",
+  "dbb":"",
+  "cns":"",
+  "cg":"",
+  "hq":"cenet.pdf",
+  "nt":"",
+  "lis":"",
+  "mn":"",
+  "par":"",
+  "rok":"",
+  "syd":"",
+  "tas":"",
+  "too":"",
+  "tsv":"",
+  "wag":"wagga.pdf",
+  "wf":"",
+  "wol":"",
+  "ext":"",
+  "preview":"",
+  "sydpreview":"",
+  "cgpreview":""
+}
+// Redirect to Bookmark App on error to initiate MFA
+const getAUPRedirect = {
+  "arm":"",
+  "bat":"",
+  "dbb":"",
+  "cns":"",
+  "cg":"",
+  "hq":"https://dashboard-hq.cenet.catholic.edu.au/home/bookmark/0oaloa2ji7illISPa357/2557",
+  "nt":"",
+  "lis":"",
+  "mn":"",
+  "par":"",
+  "rok":"",
+  "syd":"",
+  "tas":"",
+  "too":"",
+  "tsv":"",
+  "wag":"https://dashboard-wag.cenet.catholic.edu.au/home/bookmark/0oan5142t7TZirNBl357/2557",
+  "wf":"",
+  "wol":"",
+  "preview":"",
+  "sydpreview":"",
+  "cgpreview":""
+}
+// For IdP initiated login to Hub from Spoke (for accessing Hub Apps while authenticating against Spoke)
+// https://cenet-<diocese>.okta.com/app/okta_org2org/<id>/sso/saml
+// https://dashboard-<diocese>.cenet.catholic.edu.au/app/okta_org2org/<id>/sso/saml
+const getSsoUrl = { // Prod Org2Org Apps
+  'arm':'exkmwf671bggyqsnp356',
+  'bat':'exkmwfhtiilnCv2LV356',
+  'dbb':'exkmwfynei5S160LR356',
+  'cns':'exkmwdyacpCZuoY1q356',
+  'cg':'exkmwdz5oiqx7FHB2356',
+  'hq':'exkmwfme9kD1sQVdd356',
+  'nt':'exkacxdq3EM65vaLQ4x6',
+  'lis':'exkmwdt78OOsZusuJ356',
+  'mn':'exkmweomdVQ7tNPMk356',
+  'par':'exkmwdibpCqZWt73v356',
+  'rok':'exkmwfmgn6kMbdWHu356',
+  'syd':'exkmwd32jkQFoWFyG356',
+  'tas':'exkmwdz69oYuYVx7n356',
+  'too':'exkmwfmhaGaU7Q9ay356',
+  'tsv':'exkmweblgQpMNbyGf356',
+  'wag':'exkmwdgosCr6HRo8n356',
+  'wf':'exkmwfyo4manWXLQQ356',
+  'wol':'exkmwfynsd3xvCndQ356',
+  'ext':'exk1s6xnlnkh9jPi11d8',
+  'preview':'../cenet_loopbacksaml_1/exkt9bxyspDwJKnY70h7',
+  'sydpreview':'../cenetsu_cenethub_1/exkxudmyTgM7hkOcn1d5',
+  'cgpreview':'0oa3kfzitoX6yofqx1d7'
+}
+const getDioceseDomain = {
+  'arm':'arm.catholic.edu.au',
+  'bat':'bth.catholic.edu.au',
+  'dbb':'dbb.catholic.edu.au',
+  'cns':'cns.catholic.edu.au',
+  'cg':'cg.catholic.edu.au',
+  'hq':'cenet.catholic.edu.au',
+  'nt':'nt.catholic.edu.au',
+  'lis':'lism.catholic.edu.au',
+  'mn':'mn.catholic.edu.au',
+  'par':'parra.catholic.edu.au',
+  'rok':'rok.catholic.edu.au',
+  'syd':'syd.catholic.edu.au',
+  'tas':'catholic.tas.edu.au',
+  'too':'twb.catholic.edu.au',
+  'tsv':'tsv.catholic.edu.au',
+  'wag':'ww.catholic.edu.au',
+  'wf':'wf.catholic.edu.au',
+  'wol':'dow.catholic.edu.au',
+  'ext':'',
+  'preview':'cenet.catholic.edu.au',
+  'sydpreview':'syd.catholic.edu.au',
+  'cgpreview':'cg.catholic.edu.au'
+}
+function getUrlVars() {
+  var vars = [], hash;
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+  for(var i = 0; i < hashes.length; i++) {
+    hash = hashes[i].split('=');
+    vars.push(hash[0]);
+    vars[hash[0]] = decodeURIComponent(hash[1]);
+  }
+  return vars;
+}
+function getCookie(c_name) {
+  var i,x,y,ARRcookies=document.cookie.split(";");
+  for (i=0;i<ARRcookies.length;i++) {
+    x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+    y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+    x=x.replace(/^\s+|\s+$/g,"");
+    if (x==c_name) {
+      return unescape(y);
+    }
+  }
+}
+function setCookie(c_name,value) {
+  var exdays=365;
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  document.cookie=c_name+"="+c_value;
+}
+// Used by diocese selection page to delegate auth
+function sso(dio){
+  var ssoUrl = 'https://dashboard-'+dio+'.cenet.catholic.edu.au/app/okta_org2org/'+(getSsoUrl[dio]||'')+'/sso/saml';
+  var orgUrl = 'https://dashboard-'+dio+'.cenet.catholic.edu.au';
+  var str = decodeURIComponent(window.location.href);
+  if (str.indexOf("fromURI=")>0) {
+    var get = getUrlVars();
+    var fromURI = get['fromURI'];
+    var redirect = fromURI.replace(/^https:\/\/(?:dashboard\.cenet\.catholic\.edu\.au|cenet\.okta\.com)(.*)$/, function(match,p1,offset,string) {
+      return '?RelayState='+encodeURIComponent(encodeURIComponent(p1));
+    });
+    document.location=ssoUrl+redirect;
+  } else {
+    document.location=orgUrl; // redirect to spoke dashboard
+  }
+}
+function initSelect(){ // https://www.themaninblue.com/experiment/AccessibleSelect/
+  var theSelect = document.getElementById("dioceseSelect");
+  theSelect.changed = false;
+  theSelect.onfocus = selectFocussed;
+  theSelect.onchange = selectChanged;
+  theSelect.onkeydown = selectKeyed;
+  theSelect.onclick = selectClicked;
+  theSelect.onmousedown = selectClicked;
+  return true;
+}
+function selectChanged(theElement){
+  var theSelect;
+  if (theElement && theElement.value){
+    theSelect = theElement;
+  } else {
+    theSelect = this;
+  }
+  if (!theSelect.changed) {
+    return false;
+  }
+  theSelect.value && sso(theSelect.value);
+  return true;
+}
+function selectClicked() {
+  this.changed = true;
+}
+function selectFocussed(){
+  this.initValue = this.value;
+  return true;
+}
+function selectKeyed(e){
+  var theEvent;
+  var keyCodeTab = "9";
+  var keyCodeEnter = "13";
+  var keyCodeEsc = "27";	
+  if (e) {
+    theEvent = e;
+  } else {
+    theEvent = event;
+  }
+  if ((theEvent.keyCode == keyCodeEnter || theEvent.keyCode == keyCodeTab) && this.value != this.initValue) {
+    this.changed = true;
+    selectChanged(this);
+  } else if (theEvent.keyCode == keyCodeEsc) {
+    this.value = this.initValue;
+  } else {
+    this.changed = false;
+  }
+  return true;
+} // https://www.themaninblue.com/experiment/AccessibleSelect/
+function load(){
+  var get = getUrlVars();
+  var dio = get['diocese']||'';
+  var diocese = getDio[dio]||''; // TODO: infer from fromURI?
+  var orgUrl = 'https://dashboard-'+diocese+'.cenet.catholic.edu.au';
+  var fromURI = get['fromURI']||orgUrl;
+  var aupLink=getAUPLink[diocese]||'';
+  var aupRedirect=getAUPRedirect[diocese]||orgUrl;
+  if(get['aup']!==undefined){ // Session established, AUP requested
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+        if (xmlhttp.status == 200) { // A session already exists with custom domain
+          var responseJSON = JSON.parse(this.responseText);
+          if (responseJSON.profile.hasOwnProperty('aupAccepted') && responseJSON.profile.aupAccepted === 'yes') {
+            // continue with login flow
+            document.location=fromURI;
+          } else { // Alert placeholder for AUP prompt modal
+            var modal = document.getElementById("aupModal");
+            var aupAccept = document.getElementById("aupAccept");
+            var aupPass = document.getElementById("aupPass");
+            var span = document.getElementsByClassName("close")[0];
+            var aup = document.getElementById("aupLink");
+            aup.href=aupLink;
+            modal.style.display = "block";
+            span.onclick = function() {
+              modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+            aupAccept.onclick = function() {
+              var xmlhttp1 = new XMLHttpRequest();
+              xmlhttp1.onreadystatechange = function() {
+                if (xmlhttp1.readyState == XMLHttpRequest.DONE) {
+                  if (xmlhttp1.status == 200) { // continue with login flow
+                    document.location=fromURI;
+                  } else { // Handle 403 and trigger re-auth with MFA
+                    // Redirect to the embed URL of an MFA enabled Bookmark App with return address /signin/?aup=yes
+                    document.location=aupRedirect;
+                  }
+                }
+              };
+              const jsonBody = {"profile":{"aupAccepted":"yes"}};
+              xmlhttp1.open("POST", "https://dashboard-"+diocese+".cenet.catholic.edu.au/api/v1/users/me", true);
+              xmlhttp1.setRequestHeader('Content-Type', 'application/json');
+              xmlhttp1.withCredentials = true;
+              xmlhttp1.send(JSON.stringify(jsonBody));
+            }
+            aupPass.onclick = function() {
+              document.location=fromURI;
+            }
+            if (get['aup']=='yes') {
+              aupAccept.onclick();
+            }
+          }
+        }
+      }
+    };
+    xmlhttp.open("GET", "https://dashboard-"+diocese+".cenet.catholic.edu.au/api/v1/users/me", true);
+    xmlhttp.withCredentials = true;
+    xmlhttp.send();
+  } //else {
+    if(diocese){ // If via spoke tenant, alternatively use fromURI
+      var dioceseDomain = getDioceseDomain[diocese]||'';
+      // check if okta.com or dashboard url used in fromURI
+      var regex = /^https:\/\/[a-z-]*\.okta\.com\/.*$/
+      if(regex.test(fromURI)){
+        //redirect to dashboard url
+        document.location=fromURI.replace(/^https:\/\/cenet-([a-z]*)\.okta\.com(.*)$/, function(match,p1,p2,offset,string) {
+          return 'https://dashboard-'+p1+'.cenet.catholic.edu.au'+p2;
+        });
+      } else {
+        // show widget (spoke) with callback to set diocese cookie and redirect to app or aup
+        document.getElementById("login").classList.remove('hide');
+        var oktaSignIn = new OktaSignIn({baseUrl: orgUrl, logo:dio+'.png', logoText: dio,
+          transformUsername: function (username, operation) {
+            return username+((username.indexOf('@')===-1)?'@'+dioceseDomain:'');
+          }, features: {
+            //passwordlessAuth: !document.getElementById('Ecom_Password').value,
+            autoPush: true,
+            rememberMe: true,
+            deviceFingerprinting: false,
+            selfServiceUnlock: true,
+            hideSignOutLinkInMFA: true,
+            showPasswordRequirementsAsHtmlList: true
+          }, helpLinks: {
+            custom: [
+              {
+                text: 'Wrong diocese?',
+                href: 'https://login.cenet.catholic.edu.au?diocese'//+(fromURI?'&fromURI='+encodeURIComponent(fromURI):'') // fromURI invalid inter-tenant. TODO: spoke-hub-spoke redirect
+              }
+            ]
+          }
+        });
+        oktaSignIn.renderEl(
+          { el: '#okta-login-container' },
+          function (res) {
+            if (res.status === 'SUCCESS') {
+              window.console && console.log('User %s successfully authenticated %o %o', res.user.profile.login, res.user, res.user.profile);
+              setCookie('diocese',get['diocese']||''); // set diocese cookie only after successful login
+              // is aup required?
+              if (aupLink) {
+                res.session.setCookieAndRedirect(document.location+'&aup');
+              } else {
+                res.session.setCookieAndRedirect(fromURI);
+              }
+            }
+          }
+        );
+      }
+    } else {
+      // can we determine diocese by cookie or nla?
+      var cookie=getCookie("diocese");
+      if (dio) { // force selection if invalid (and clear cookie)
+        document.cookie="diocese=; Max-Age=0; domain=cenet.catholic.edu.au; path=/";
+        document.cookie="diocese=; Max-Age=0; domain=cenet.catholic.edu.au; path=/login"; // non-intended paths
+        document.cookie="diocese=; Max-Age=0; domain=cenet.catholic.edu.au; path=/oauth/v1/authorize";
+        document.getElementById("dioceseSelection").classList.remove('hide');
+        initSelect();
+      } else if (cookie!=null && cookie!="") {
+        sso(getDio[cookie]||'');
+      } else {
+        // display diocese selection page
+        document.getElementById("dioceseSelection").classList.remove('hide');
+        initSelect();
+        // perform NLA check
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+            if (xmlhttp.status == 200) { // Internal network detected
+              var sdios = document.getElementById("dioceseSelect").options;
+              for (var i=0, max=sdios.length; i < max; i++) {
+                if (sdios[i].text==this.responseText) sso(sdios[i].value); // TODO: return diocese directly
+              }
+            }
+          }
+        };
+        xmlhttp.open("GET", "https://nla.cenet.catholic.edu.au", true);
+        xmlhttp.withCredentials = true;
+        xmlhttp.send();
+      }
+    }
+  //}
+}
+        </script>
+        <style>
+body { margin: 0; }
+
+.prompt-wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 100%;
+  justify-content: center;
+  background-color: white;
+  border-right: 2px solid #144a7c;
+}
+
+.root {
+  background-color: #efefef;
+  width: 100%;
+  display: flex;
+  background-image: url("1410601451.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: none !important;
+  position: absolute;
+  height: 100%;
+  text-align: center;
+}
+
+#map-select {
+  position: fixed; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; top: 0; left: 0;
+}
+#logo {
+  display: none; text-align: center;
+}
+
+/* Not supported by recent Safari versions - does not render SVG
+#vdio {
+  z-index:1; max-width:90%; max-height:90%;
+}
+*/
+#vdio {
+  z-index:1; width:800px; height:613px;
+}
+@media only screen and (min-width: 1024px) and (min-height: 785px) { #vdio { width:1024px; height:785px; } }
+@media only screen and (min-width: 1280px) and (min-height: 981px) { #vdio { width:1280px; height:981px; } }
+@media only screen and (min-width: 1440px) and (min-height: 1103px) { #vdio { width:1440px; height:1103px; } }
+@media only screen and (min-width: 1680px) and (min-height: 1287px) { #vdio { width:1680px; height:1287px; } }
+@media only screen and (min-width: 1920px) and (min-height: 1471px) { #vdio { width:1920px; height:1471px; } }
+@media only screen and (min-width: 2560px) and (min-height: 1962px) { #vdio { width:2560px; height:1962px; } }
+@media only screen and (min-width: 3440px) and (min-height: 2636px) { #vdio { width:3440px; height:2636px; } }
+@media only screen and (min-width: 3840px) and (min-height: 2942px) { #vdio { width:3840px; height:2942px; } }
+@media only screen and (max-width: 800px), screen and (max-height: 600px) {
+  /* .environment {
+    font-size: 2.1rem;
+  } */
+  #map-select {
+    display: none;
+  }
+  #logo {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .prompt-wrapper {
+    /* width: 100%; */
+  }
+}
+
+.button {
+  width: 45%;
+  height: 50px;
+  line-height: 36px;
+  padding: 0 15px;
+  border: 1px solid;
+  border-radius: 3px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.button:focus {
+  box-shadow: 0 0 8px #51cbee;
+}
+
+.button-primary {
+  background: #144a7c !important;
+  border-color: #144a7c !important;
+  color: #fff !important;
+}
+
+#okta-sign-in.auth-container {
+  border-style: none;
+}
+
+#okta-sign-in .auth-header {
+    padding: 0px 0px 75px;
+}
+
+#okta-sign-in.no-beacon .auth-header {
+    padding-bottom: 0px;
+}
+
+#okta-sign-in .auth-org-logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 334px;
+    max-height: 225px;
+}
+
+#okta-sign-in .o-form-head {
+  display: none;
+}
+
+#continue {
+  display: block;
+  white-space: pre;
+  font-family: "Barlow", sans-serif;
+  color: #000000;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: large;
+}
+
+a:hover path { filter: brightness(85%); transition: .6s fill;}
+a:focus path { filter: brightness(85%); transition: .6s fill;}
+a:hover text { filter: drop-shadow(0px 0px 5px #093b6e);}
+a:focus text { filter: drop-shadow(0px 0px 5px #093b6e);}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 10; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  font-family: "Barlow", sans-serif;
+  color: #777;
+  text-align: center;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 350px; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+} 
+        </style>
+    <style>
+  .imageye-selected {
+    outline: 2px solid black !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important;
+  }
+</style><link rel="stylesheet" href="chrome-extension://244e75d2-1bc0-469b-b69c-87d00f83a4fb/app/content-style.css"></head>
+    <body class="background" onload="load();" data-new-gr-c-s-check-loaded="14.1276.0" data-gr-ext-installed="">
+        <noscript><div>JavaScript is not enabled!</div><div><a href="https://cenet.okta.com/signin">Login using Okta instead.</a></div></noscript>
+	<div id="login" class="hide">
+            <div class="root">
+                <div class="prompt-wrapper">
+                    <div id="outer-container">
+                        <div id="okta-login-container"></div>
+                    </div>
+                </div>
+	    </div>
+	    <script src="https://w8vxjtpzzgy4.statuspage.io/embed/script.js"></script>
+	</div><iframe src="https://w8vxjtpzzgy4.statuspage.io/embed/frame" title="CEnet Demo Status" aria-hidden="true" style="position: fixed; border: none; box-shadow: rgba(9, 20, 66, 0.25) 0px 20px 32px -8px; z-index: 9999; transition: left 1s, bottom 1s, right 1s; height: 115px; width: 320px; left: -9999px; right: -9999px; bottom: calc(100% - 175px);" tabindex="-1"></iframe>
+        <div id="aupModal" class="modal">
+          <div class="modal-content">
+            <span class="close">×</span>
+	    <p>Please take a moment to review the</p>
+	    <p><a id="aupLink" target="_blank">Acceptable Usage Policy</a>.</p>
+	    <button type="button" class="button button-primary" value="Accept" id="aupAccept">Accept</button>
+            <button type="button" class="button button-primary" value="Later" id="aupPass">Later</button>
+          </div>
+        </div>
+	<input type="checkbox" id="accept" class="hide">
+	<div id="dioceseSelection" class="">
+          <span id="continue">To continue, please select your diocese...</span>
+	  <select id="dioceseSelect" tabindex="5" style="position:fixed; z-index:4; left:50%; transform: translate(-50%, 100%);">
+            <option value="">choose diocese</option>
+            <option value="arm">Armidale</option>
+            <option value="bat">Bathurst</option>
+            <option value="dbb">Broken Bay</option>
+            <option value="cns">Cairns</option>
+            <option value="cg">Canberra-Goulburn</option>
+            <option value="hq">CEnet</option>
+            <option value="nt">Darwin</option>
+            <option value="lis">Lismore</option>
+            <option value="mn">Maitland-Newcastle</option>
+            <option value="par">Parramatta (Education)</option>
+            <option value="par">Parramatta (Diocese)</option>
+            <option value="rok">Rockhampton</option>
+            <option value="syd">Sydney</option>
+            <option value="tas">Tasmania</option>
+            <option value="too">Toowoomba</option>
+            <option value="tsv">Townsville</option>
+            <option value="wag">Wagga Wagga</option>
+            <option value="wf">Wilcannia-Forbes</option>
+            <option value="wol">Wollongong</option>
+            <option value="ext">Customers</option>
+	  </select>
+	  <div id="logo"><img src="cenet.png"></div>
+	  <div id="map-select">
+<svg id="vdio" version="1.1" viewBox="0 0 565.45501 432.88226">
+ <g transform="translate(-4.7758 -7)">
+  <a class="xdio" href="javascript:sso('tas');" xlink:href="javascript:sso('tas');" tabindex="23"><path d="m 368.83,439.13 c -2.7995,-0.66177 -5.5902,-3.741 -7.5962,-8.3817 -0.65381,-1.5125 -1.6326,-2.75 -2.175,-2.75 -1.8062,0 -3.2047,-3.8548 -2.1282,-5.8663 1.0157,-1.8978 0.46022,-4.4592 -2.6517,-12.228 -0.79183,-1.9766 -1.2905,-4.9016 -1.1082,-6.5 0.44943,-3.9402 3.4052,-4.2261 10.244,-0.99075 4.637,2.1936 6.544,2.5165 13.458,2.2788 6.9432,-0.23875 8.4138,-0.61318 10.646,-2.7105 2.4282,-2.2811 2.7592,-2.3392 5.2864,-0.92736 3.2389,1.8094 4.1141,6.7951 1.7782,10.13 -1.0478,1.4959 -1.3549,3.382 -0.9565,5.8735 0.52819,3.3031 0.33628,3.7329 -1.9194,4.2991 -2.6108,0.65528 -4.7061,4.7916 -4.7061,9.2903 0,1.4229 -0.59206,2.3508 -1.5,2.3508 -0.825,0 -1.5,-0.51974 -1.5,-1.155 0,-0.7279 -0.64711,-0.58675 -1.75,0.38172 -0.9625,0.84519 -2.7222,1.8325 -3.9105,2.194 -1.1883,0.3615 -2.8862,1.7647 -3.773,3.1183 -0.88689,1.3536 -1.9396,2.4078 -2.3395,2.3427 -0.39982,-0.0651 -1.9294,-0.40258 -3.3992,-0.75 z" fill="#e1d8b5"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="351.76147" y="408.00195"><tspan sodipodi:role="line" x="351.76147" y="408.00195">Hobart</tspan></text></a>
+  <a class="xdio" href="javascript:sso('cns');" xlink:href="javascript:sso('cns');" tabindex="13"><path d="m288 92.5c0-8.525 0.28898-15.5 0.64219-15.5 0.3532 0 3.0125 2.025 5.9095 4.5 3.038 2.5954 6.2739 4.5 7.6456 4.5 1.308 0 3.9363 1.3317 5.8405 2.9594 1.9042 1.6276 3.9902 2.9776 4.6355 3 0.64531 0.02235 2.5795 1.2239 4.2983 2.6701l3.125 2.6295 6.4151-2.7265c4.3041-1.8293 6.6306-3.435 7.07-4.8795 0.36019-1.1842 1.3433-2.9371 2.1848-3.8955s1.8831-3.9769 2.3148-6.7078c0.43171-2.731 1.5472-6.5717 2.4788-8.535 1.2517-2.6377 1.5158-4.8024 1.0116-8.2922-1.8088-12.519-1.8133-16.472-0.0262-22.574 0.99029-3.3816 2.4418-6.9075 3.2255-7.8353 0.78374-0.92784 1.159-2.1174 0.83381-2.6435-0.32514-0.52609 0.10532-2.917 0.95658-5.313 0.85826-2.4158 1.2966-5.7187 0.98396-7.4143-0.47942-2.6001-0.0242-3.5356 3.0418-6.25 1.9831-1.7557 3.9722-3.1922 4.4201-3.1922 1.007 0 4.4352 7.0644 6.1594 12.692 0.74715 2.4388 2.0266 4.3864 3.0589 4.6564 1.9466 0.50904 2.3804 3.6454 0.73214 5.2937-0.72318 0.72318-0.57006 1.4344 0.5 2.3224 0.84831 0.70404 1.5424 2.0984 1.5424 3.0986s0.39015 2.0597 0.86701 2.3544c0.47685 0.29471 1.078 3.8245 1.336 7.8439 0.29783 4.6407 1.1172 8.2974 2.245 10.019l1.776 2.7104 3.7819-2.9954c2.0801-1.6474 4.2113-2.9954 4.7362-2.9954s1.7879 1.8488 2.8069 4.1085c1.019 2.2597 2.8588 4.7678 4.0886 5.5735 2.6074 1.7084 4.0371 6.8002 2.4473 8.7157-1.1691 1.4087-0.51477 6.7382 1.2403 10.102 0.57389 1.1 1.0842 4.3019 1.1339 7.1154 0.0719 4.0631 0.85679 6.3569 3.8157 11.151 6.2672 10.154 11.524 9.2339-52.775 9.2339h-56.5z" fill="#d8d1c0"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="343.94235" y="81.537575"><tspan sodipodi:role="line" x="343.94235" y="81.537575">Cairns</tspan></text></a>
+  <a class="xdio" href="javascript:sso('tsv');" xlink:href="javascript:sso('tsv');" tabindex="25"><path d="m288 136.5v-26.5h114.27l-0.61418 4.4809c-0.73909 5.3923-0.75181 5.3789 10.342 10.837 5.3377 2.6261 8.8687 5.0224 9.4911 6.4411 0.54508 1.2425 1.8951 2.5322 3 2.8661 3.1368 0.9477 8.5089 5.3202 8.5089 6.9257 0 1.2321-4.3327 1.4491-28.93 1.4491h-28.93l-0.31955 2.226c-0.25395 1.769-1.2132 2.3778-4.6728 2.9655-6.184 1.0504-12.579 5.0927-14.517 9.1755-0.89657 1.8894-1.6301 3.9297-1.6301 4.5341 0 0.77629-9.6872 1.0989-33 1.0989h-33z" fill="#e1d9b1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="297.07986" y="133.45192"><tspan sodipodi:role="line" x="297.07986" y="133.45192">Townsville</tspan></text></a>
+  <path d="m81 153.05v-11.05l-17.5-0.1338 4.3033-1.3433c7.7027-2.4045 14.972-7.5045 16.641-11.674 0.82909-2.0721 3.1091-5.8657 5.0666-8.4302 3.3628-4.4055 3.4745-4.792 2.0243-7.0053-0.84418-1.2884-1.5349-3.6018-1.5349-5.141 0-3.1686 6.3627-13.272 8.3582-13.272 0.71776 0 2.7772 2.272 4.5766 5.0489 3.1899 4.9228 5.9082 6.142 5.2248 2.3434-1.5258-8.4816-1.432-9.3383 1.1295-10.312 1.373-0.522 3.4446-0.70111 4.6036-0.39802 1.6734 0.4376 2.1073 0.09625 2.1073-1.6578 0-1.2149 0.9-3.3531 2-4.7515 1.1-1.3984 2-3.9819 2-5.7411s0.3375-3.536 0.75-3.9485c0.71352-0.71352 0.83355-1.1074 1.125-3.6917 0.0752-0.66722 1.1042-0.86265 2.585-0.49099 1.8448 0.46302 2.732 0.10925 3.5475-1.4147 0.81874-1.5298 1.5023-1.8 2.7656-1.093 1.3306 0.74463 1.9256 0.35036 2.8735-1.9039 0.91681-2.1804 1.68-2.7163 3.2744-2.2994 1.6078 0.42046 2.079 0.07738 2.079-1.514 0-1.1317 0.4016-2.3058 0.89244-2.6092 1.3184-0.81481 11.744 4.0434 12.412 5.7838 0.31544 0.82204 1.6023 1.642 2.8596 1.8222 1.2574 0.18016 2.7918 1.3459 3.4098 2.5905l1.1237 2.263 2.6807-2.1087c1.4744-1.1598 3.2758-1.8803 4.0032-1.6012 1.5247 0.5851 2.214 13.566 3.2559 61.315l0.65743 30.131-4.3973 0.47459c-2.4185 0.26103-11.37 0.55858-19.891 0.66123-8.5216 0.10265-16.397 0.36624-17.5 0.58577-1.1034 0.21953-12.244 0.67311-24.756 1.008l-22.75 0.60883z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('nt');" xlink:href="javascript:sso('nt');" tabindex="16"><path d="m172.97 185.75c-0.0139-2.8875-0.67865-27.75-1.4772-55.25-1.8974-65.34-2.0242-58.5 1.084-58.5h2.5816l-2.0816-3.368c-2.6983-4.366-2.6385-4.8078 0.92476-6.8355 1.6465-0.93692 2.9937-2.3994 2.9937-3.25 0-0.85058 0.45-1.5465 1-1.5465s0.90557-0.3375 0.79016-0.75c-0.41585-1.4864 3.512-8.3414 5.3402-9.3198 1.0283-0.55033 1.8696-1.5756 1.8696-2.2783 0-0.70275 1.3289-2.5509 2.9531-4.107 2.8723-2.7518 3.1597-2.8106 10.5-2.1454 8.7505 0.79295 9.532-0.14623 4.6594-5.5996-2.4939-2.7911-3.1073-3.0492-4.5-1.8933-1.259 1.0449-1.9284 1.0762-3.0531 0.14274-2.0966-1.74-0.80412-3.9609 2.2794-3.917 1.4636 0.02086 3.8197-0.26276 5.2357-0.63027 1.936-0.50247 3.3246-0.03706 5.5988 1.8765 2.3898 2.0109 3.7387 2.4288 6.4299 1.992 3.5142-0.57028 15.445 2.0213 17.634 3.8306 0.68049 0.56236 2.0305 0.71189 3 0.33228 0.9695-0.3796 5.2225-1.304 9.451-2.0543 4.2286-0.75026 9.1274-2.1083 10.886-3.0178 2.6801-1.3859 3.5838-1.4471 5.5819-0.37778 1.8316 0.98022 2.6574 1.0025 3.5638 0.0961 1.9544-1.9544 4.6121-1.381 4.9602 1.0702 0.20536 1.446 1.1236 2.3642 2.5696 2.5696 1.2375 0.17575 2.25 0.78695 2.25 1.3582 0 1.6943-4.4231 10.822-5.2442 10.822-0.41572 0-0.75585 0.64844-0.75585 1.441 0 2.0128-1.953 3.0061-3.2871 1.6719-0.61208-0.61208-1.6979-1.1129-2.4129-1.1129-1.8067 0-1.6371 3.9334 0.2 4.6384 2.0055 0.76958 1.8584 2.3465-0.5 5.3616-1.0755 1.375-1.9655 3.2475-1.9778 4.1611-0.0316 2.362 5.4256 6.6447 9.4225 7.3945 1.8622 0.34936 4.4024 1.7173 5.6449 3.0398 1.2424 1.3225 3.0438 2.4046 4.0029 2.4046 5.1842 0 4.9075-3.333 4.9075 59.107v57.893h-113l-0.0253-5.25z" fill="#e1d9d0"></path>
+  <path d="m176.04 35.544c-1.4881-1.7931-0.54175-3.5438 1.9157-3.5438 1.6845 0 3.048 1.8259 3.048 4.0818 0 1.4585-3.6335 1.0647-4.9636-0.53798z" fill="#e1d9d0"></path>
+  <path d="m183.19 35.04c-1.2034-1.6277-2.1881-3.6669-2.1881-4.5314 0-2.106 2.8447-3.0872 5.0172-1.7304 0.96377 0.60188 2.7066 0.84479 3.8729 0.5398 2.5281-0.66112 5.2068 1.2654 4.4612 3.2085-0.51657 1.3462-6.715 5.473-8.2204 5.473-0.41513 0-1.7394-1.3318-2.9428-2.9595z" fill="#e1d9d0"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="206.18642" y="99.209145"><tspan sodipodi:role="line" x="206.18642" y="120.209145">Darwin</tspan></text></a>
+  <a class="xdio" href="javascript:sso('rok');" xlink:href="javascript:sso('rok');" tabindex="21"><path d="m372.25 191.24-84.25-0.25568v-25.989h66.683l1.1826-3.9473c1.6322-5.4476 7.1237-9.7657 14.307-11.249 4.0317-0.83274 5.8298-1.7045 6.1658-2.9895 0.44366-1.6966 2.2443-1.8132 27.818-1.8016l27.344 0.0124 2.2727 3.5083c3.3177 5.1213 6.2273 13.039 6.2273 16.945 0 1.8722 0.45 3.6821 1 4.022 0.56282 0.34784 1-0.45395 1-1.834 0-3.9772 2.801-4.1175 5.0803-0.25446 1.4322 2.4274 2.5246 3.243 3.8718 2.8907 2.4126-0.63091 4.4441 2.9832 3.5899 6.3865-0.34545 1.3764-0.224 3.022 0.26988 3.6569s1.3672 2.5044 1.9408 4.1544c0.57355 1.65 1.3397 3.7294 1.7026 4.621 0.38817 0.95372 0.12155 1.777-0.64772 2-0.71911 0.20847-39.22 0.26398-85.557 0.12336z" fill="#c0b8a1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="359.28146" y="173.78055"><tspan sodipodi:role="line" x="359.28146" y="173.78055">Rockhampton</tspan></text></a>
+  <path d="m476.03 217.53c-0.81011-0.97613-0.97916-2.896-0.50631-5.75 0.93671-5.6537 2.1637-7.8423 4.0015-7.137 2.3117 0.8871 2.8063 4.8133 1.0372 8.2343-0.8809 1.7035-1.5925 3.3269-1.5814 3.6077 0.0804 2.0256-0.0852 2.5105-0.8573 2.5105-0.48265 0-1.4248-0.65944-2.0937-1.4654z" fill="#e3e3e3"></path>
+  <path d="m460.59 234.58c-0.30691-1.143-0.56417-4.4079-0.57168-7.2555-0.0112-4.2429-0.44041-5.5131-2.3779-7.0371-1.3003-1.0228-3.0896-3.2624-3.9761-4.9768-0.88653-1.7144-3.0151-4.1727-4.7302-5.4629-7.9024-5.9448-9.0648-7.5515-8.7379-12.077l0.3084-4.2685 10.87 0.1558c7.6279 0.10933 11.253 0.55673 12.153 1.5 0.70586 0.73931 2.5033 4.4332 3.9943 8.2086 1.491 3.7754 3.5594 7.7129 4.5965 8.75s1.8856 2.3801 1.8856 2.9845 0.72712 2.6312 1.6158 4.504c1.0291 2.1686 1.3663 4.4022 0.92865 6.1511-0.37794 1.5103-0.92751 4.1933-1.2213 5.9621-0.59978 3.6116-1.7502 4.1966-9.1192 4.6374-4.413 0.26398-5.1321 0.0368-5.6187-1.7754z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('too');" xlink:href="javascript:sso('too');" tabindex="24"><path d="m440 244.05c0-1.4657-5.9409-3.7974-11.5-4.5135-15.026-1.9357-15.747-1.8951-20 1.1256l-4 2.841-85.5 0.63445v-42.134h-31.00988v-9H438v4.7775c0 5.6942 1.4956 8.0871 7.3827 11.812 2.4255 1.5345 5.1953 4.1672 6.1552 5.8505 0.9599 1.6833 2.7576 4.1855 3.9949 5.5605 1.6823 1.8694 2.3563 4.0764 2.6723 8.75l0.42256 6.25-3.0638 0.0153c-4.3359 0.0217-5.9265 1.3071-5.3499 4.3235 0.4414 2.3091 0.23529 2.501-2.1691 2.0202-1.73-0.34601-3.1161 0.022-3.9733 1.0548-1.4432 1.7389-4.0715 2.1476-4.0715 0.63313z" fill="#d8d8c1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="349.87814" y="217.23663"><tspan x="349.87814" y="217.23663" sodipodi:role="line">Toowoomba</tspan></text></a>
+  <path d="m21.31 246.8c-1.1723-1.2647-2.6289-4.0995-3.237-6.2995-1.3214-4.7807-2.4558-6.3024-7.0732-9.4885-4.3866-3.0268-5.082-4.0425-4.0415-5.9018 0.46719-0.83483 0.36805-2.4936-0.22712-3.7999-1.5329-3.3642-0.30709-3.847 3.7259-1.4675 2.9391 1.7341 3.5427 1.8292 3.5427 0.55822 0-2.1221-1.8647-5.4643-4.5936-8.2332-2.5328-2.5699-4.8134-11.293-4.6191-17.667 0.067059-2.2 0.10939-7.2542 0.094062-11.232-0.015325-3.9774 0.26042-8.1399 0.61276-9.25 0.82558-2.6012 3.989-2.5944 5.815 0.0126 1.3866 1.9797 1.4549 1.9529 2.7044-1.0638 0.7771-1.8761 3.3304-4.4052 6.484-6.4225 2.8611-1.8302 8.0232-5.4046 11.471-7.9429 3.4481-2.5384 8.7217-5.3281 11.719-6.1995 2.9973-0.87135 7.0659-3.0033 9.0411-4.7376 3.5069-3.0791 3.8582-3.1618 14.931-3.5148l11.34-0.36152v22.212l8.75-0.0231c4.8125-0.0127 20.225-0.43952 34.25-0.94844s30.651-1.0043 36.947-1.1009l11.447-0.17555 0.35858 7.874c0.19721 4.3307 0.67125 20.098 1.0534 35.039l0.69483 27.165-12 0.59161c-6.6 0.32538-27.908 1.0404-47.351 1.5889-19.443 0.54852-35.756 1.2472-36.25 1.5527-0.49424 0.30543-0.89862 2.505-0.89862 4.8879v4.3326l-18.75 0.62093c-10.312 0.34151-22.138 0.86256-26.279 1.1579-6.9325 0.4944-7.6981 0.35472-9.6606-1.7625z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('arm');" xlink:href="javascript:sso('arm');" tabindex="10"><path d="m 456.37109,238.12695 c -1.55854,0.14564 -3.09317,0.45754 -4.6289,0.75 0.19075,1.58203 0.38151,3.16407 0.57226,4.7461 -1.87221,0.75498 -3.92364,0.80275 -5.91406,0.78515 -1.21791,0.75357 -2.44512,1.49399 -3.61719,2.31836 -4.91337,-1.24199 -9.06348,-4.83642 -14.25913,-5.07249 -6.10763,-0.87754 -12.56048,-1.79285 -18.5156,0.36028 -3.20878,1.32529 -6.46063,2.56108 -9.56902,4.11456 -2.30585,2.04668 -2.54795,5.6432 -1.29101,8.32226 0.85872,3.33138 1.71745,6.66276 2.57617,9.99414 1.94663,2.42309 5.27272,2.78324 8.16406,2.95899 4.22831,0.44565 8.44852,1.15449 12.5,2.4707 1.0645,1.7206 1.85451,3.6041 3.04102,5.25 4.90141,-0.61167 9.95332,-1.76413 14.83902,-0.4204 2.53869,0.37711 5.07737,0.75422 7.61606,1.13134 5.13318,-1.83063 7.77031,-8.04252 6.34952,-13.14969 -0.71291,-3.02359 -0.74912,-6.38471 0.83898,-9.1499 1.78502,-4.56329 3.49067,-9.19148 4.39353,-14.02268 -0.19663,-1.45628 -1.98756,-1.44282 -3.09571,-1.38672 z" fill="#c0b8a1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="397.89548" y="253.15039"><tspan sodipodi:role="line" x="397.89548" y="253.15039">Armidale</tspan></text></a>
+  <path d="m57 278.6 2.48e-4 -3.8954-19.5 1.0609-2.6157-3.3738c-2.8602-3.6892-10.502-20.112-9.721-20.893 0.52764-0.52763 37.454-2.4562 47.587-2.4853l6.25-0.01798v-9.7664l22.25-0.67872c12.238-0.37329 33.037-1.0918 46.22-1.5966 13.184-0.50485 24.293-0.58949 24.688-0.1881 0.39473 0.4014 0.82653 7.4267 0.95956 15.612 0.22254 13.693 0.0877 14.998-1.6879 16.33-4.2948 3.2222-11.833 6.4139-18.196 7.7043-6.1383 1.2448-10.236 2.467-15.733 4.6929-1.1 0.44538-19.663 0.94058-41.25 1.1004l-39.25 0.29067z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('lis');" xlink:href="javascript:sso('lis');" tabindex="17"><path d="m 471.91797,237.95312 c -3.15866,0.37083 -6.30501,0.83787 -9.44336,1.35157 -2.77255,5.08837 -3.34661,11.10814 -6.50781,16.01367 -1.48633,3.23405 -0.13599,6.76152 0.3259,10.06107 0.35504,3.53492 -1.41352,6.84527 -3.43137,9.61276 -0.8907,1.80624 0.6076,3.6395 1.97945,4.69378 2.43845,1.99598 5.09125,3.72805 7.60258,5.61676 0.69527,0.25484 1.48072,1.84087 2.15039,1.04102 2.37565,-8.17919 2.59017,-16.91393 5.91267,-24.82783 2.31709,-5.42015 4.82133,-10.75765 7.37835,-16.06865 0.71429,-3.55787 -2.16192,-7.68484 -5.9668,-7.49415 z" fill="#e1d9c1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="467.88358" y="264.2348"><tspan x="467.88358" y="264.2348" sodipodi:role="line">Lismore</tspan></text></a>
+  <a class="xdio" href="javascript:sso('mn');" xlink:href="javascript:sso('mn');" tabindex="18"><path d="m 432.91797,275.66016 c -3.3955,0.3997 -6.46146,2.08356 -9.28516,3.91601 -1.14333,-0.33719 -1.55189,1.84118 -0.34961,1.92774 2.28747,-0.36861 4.88364,1.26408 5.09766,3.66601 0.65258,2.06712 3.0093,2.61297 4.8418,3.14649 1.38579,0.45303 2.79225,0.8904 4.06445,1.61718 4.70814,-0.0554 9.61246,0.15816 13.89114,2.34324 3.41433,1.4971 6.459,3.76497 9.02292,6.4595 1.21868,0.79349 3.06926,-0.42596 2.81445,-1.85938 0.44922,-2.39192 0.89844,-4.78385 1.34766,-7.17578 -2.82869,-3.85301 -6.92074,-6.49867 -10.91897,-8.99209 -6.19839,-3.53255 -13.38906,-5.35421 -20.52634,-5.04892 z" fill="#d9d1b1"></path>
+<text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="460.86401" y="290.40948"><tspan x="460.86401" y="290.40948" sodipodi:role="line">Maitland-Newcastle</tspan></text></a>
+  <a class="xdio" href="javascript:sso('dbb');" xlink:href="javascript:sso('dbb');" tabindex="12"><path d="m 439.70898,291.29688 c -1.55678,0.79685 -1.25034,2.78953 -1.29296,4.24218 -0.12719,2.52642 -0.14224,5.08592 0.39843,7.57032 3.45368,1.22136 6.95951,2.51722 9.84651,4.84134 1.52487,1.1471 2.88597,2.51475 4.0031,4.06295 1.4555,0.0952 1.94688,-1.57701 2.85075,-2.39171 1.87288,-2.38987 3.54148,-5.22505 3.47542,-8.36024 -1.33586,-4.40279 -5.49664,-7.2515 -9.69189,-8.60977 -3.02633,-1.02279 -6.23434,-1.37145 -9.41553,-1.41172 l -0.17381,0.0566 z" fill="#dad2aa"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="455.5239" y="303.06003"><tspan x="455.5239" y="303.06003" sodipodi:role="line">Broken Bay</tspan></text></a>
+  <path d="m51.5 313.53c-2.2-1.355-4.9428-2.4777-6.095-2.4949-2.3557-0.0351-4.8433-2.4623-5.8222-5.6807-0.4808-1.5808 0.0031-2.6662 1.8291-4.1025l2.4829-1.953-1.4963-8.3975c-0.82299-4.6186-1.8405-9.5225-2.261-10.897l-0.7647-2.5 15.627-0.41518v7.4764l77.298-0.80349-0.67345 3.3711c-1.0868 5.44-4.6383 8.1695-11.859 9.1142-8.0074 1.0476-9.6606 1.0762-13.004 0.22528-1.6411-0.41771-5.3546 0.0114-9.2695 1.0711-5.2729 1.4273-6.6445 2.2182-7.1179 4.1043-0.41521 1.6543-1.689 2.6332-4.364 3.3535-2.0777 0.55946-4.3598 1.7186-5.0713 2.576-1.9311 2.3268-6.4749 4.424-9.6397 4.4491-1.5398 0.01223-3.9247 0.90222-5.2997 1.9778-3.5374 2.767-9.5575 2.5703-14.5-0.47391z" fill="#e3e3e3"></path>
+  <path d="m306.62 315.81c-0.84572-0.47329-1.82-2.5358-2.1652-4.5833-1.0972-6.509-1.4208-6.9627-6.5358-9.1631-3.4641-1.4902-6.7032-2.0902-10.463-1.9381-2.9951 0.12118-5.6526 0.0133-5.9056-0.23968-0.253-0.253 0.20316-2.3848 1.0137-4.7374 2.5036-7.2668-0.36283-8.1826-3.2246-1.0303-1.7228 4.3058-3.813 5.8858-7.7866 5.8858-2.7319 0-6.5399 4.7984-6.5473 8.25-6e-3 2.8517-3.4398 5.5805-6.3275 5.0284-3.1644-0.6049-5.0847-2.7356-6.56-7.2784-0.86119-2.6518-2.7269-4.5559-7.699-7.8574-3.6093-2.3966-6.828-5.0966-7.1525-6-0.32457-0.90343-1.3579-2.7676-2.2962-4.1426s-2.0162-3.625-2.3952-5-1.4192-4.2159-2.3115-6.3131c-1.308-3.0741-2.0295-3.711-3.7226-3.286-1.1843 0.29724-3.3649-0.30253-5.0003-1.3754-2.0869-1.369-3.3961-1.6371-4.6687-0.95595-1.1943 0.63916-2.8404 0.49415-5.0693-0.44658-13.306-5.6161-14.202-5.7968-25.106-5.0664l-10.424 0.6983-0.58858-3.3774c-0.32372-1.8576-0.84425-14.852-1.1567-28.877s-0.81438-28.988-1.1153-33.25l-0.5472-7.75h113.14v11h31v112.67h-4.4221c-2.4322 0-5.1141-0.38724-5.9598-0.86052z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('syd');" xlink:href="javascript:sso('syd');" tabindex="22"><path d="m 438.54102,304.81641 c -4.70763,2.3318 -8.64285,6.12729 -13.73773,7.68136 -1.10875,0.55503 -1.69176,2.18959 -0.7144,3.13588 2.89547,4.60212 5.63713,9.37663 9.45799,13.29604 2.66749,0.71272 5.07723,-1.11273 7.11655,-2.58004 4.48499,-3.54686 8.94207,-7.6087 11.02407,-13.08012 0.003,-1.65599 -1.85121,-2.23484 -2.88714,-3.17838 -3.07832,-2.24313 -6.42796,-4.1862 -10.09333,-5.28646 z" fill="#f1f1e1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="445.0083" y="318.75165"><tspan x="445.0083" y="318.75165" sodipodi:role="line">Sydney</tspan></text></a>
+  <path d="m267.23 330.93c-3.384-1.309-3.9581-3.9172-1.3305-6.0449 3.072-2.4875 14.852-2.2345 16.482 0.35405 0.86765 1.3779 0.63629 2.193-1.1213 3.9506-1.8624 1.8624-2.6553 2.0536-4.9861 1.2023-1.9905-0.72696-3.3352-0.66994-4.7716 0.2023-1.3067 0.79348-2.7877 0.90982-4.2722 0.3356z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('wol');" xlink:href="javascript:sso('wol');" tabindex="28"><path d="m 417.48242,314.14844 c -2.59031,2.24361 -2.93849,5.86241 -3.60469,9.00837 -0.98178,5.30996 -1.27425,10.85917 0.10274,16.12835 3.22331,4.03023 10.26749,4.32564 13.49971,0.15577 1.51406,-1.60447 3.04938,-3.20277 4.35185,-4.98976 0.78179,-2.51251 -0.93233,-4.80797 -2.15444,-6.84538 -2.78933,-4.77541 -5.59604,-9.94658 -10.48883,-12.87978 -0.52589,-0.28588 -1.06952,-0.70402 -1.70634,-0.57757 z" fill="#d9d1b1"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="431.17908" y="334.75275"><tspan x="431.17908" y="334.75275" sodipodi:role="line">Wollongong</tspan></text></a>
+  <a class="xdio" href="javascript:sso('wf');" xlink:href="javascript:sso('wf');" tabindex="27"><path d="m 393.48047,245.86328 c -24.82813,0.0443 -49.65625,0.0885 -74.48438,0.13281 0,19.5892 0,39.17839 0,58.76758 4.55497,0.85975 9.12886,1.65413 13.61329,2.8418 1.34102,1.76179 2.45012,3.69743 3.29882,5.74219 3.33977,1.94358 7.18709,3.47697 9.41284,6.81616 4.10535,4.57114 8.77944,8.57765 13.09107,12.94556 0.33736,0.89304 1.03513,1.78892 2.05078,1.88867 2.96877,-3.10186 6.26698,-6.43461 6.93945,-10.8711 0.69238,-4.15956 0.0436,-8.4599 -1.45117,-12.37695 -0.24181,-2.08629 1.8837,-3.82113 3.8711,-3.6582 2.43369,-0.3541 5.18198,-1.38571 6.16211,-3.84766 0.41054,-1.73258 0.18338,-4.01027 1.94335,-5.05078 2.60645,-2.10158 6.71137,-1.93553 9.12688,0.39 2.10738,1.47375 4.09624,3.13083 6.35555,4.37562 3.09228,0.18941 5.59541,-2.61221 6.06445,-5.49414 1.5635,-5.53858 1.83267,-11.3412 3.29492,-16.90234 0.35297,-4.64421 -2.85804,-8.60433 -2.96681,-13.1913 -0.68422,-6.66465 -2.40134,-13.1759 -3.12698,-19.83188 0.005,-0.98876 -0.22137,-2.23977 -1.34957,-2.50807 -0.59441,-0.20611 -1.22596,-0.19685 -1.8457,-0.16797 z" fill="#e0e0d8"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="329.44437" y="263.65518"><tspan sodipodi:role="line" x="329.44437" y="263.65518">Wilcannia</tspan><tspan sodipodi:role="line" x="329.44437" y="276.98856"> - Forbes</tspan></text></a>
+  <path d="m 349.33984,329.42773 c 1.4679,4.3457 2.53679,8.98304 1.99107,13.58601 -0.25414,0.82695 -1.04848,2.32525 0.15151,2.74603 2.33153,0.95697 4.91088,0.51521 7.34955,0.89093 6.20305,0.33913 12.4245,0.45746 18.60162,1.16375 1.46193,1.13091 2.79856,2.41084 4.10938,3.71094 3.99922,-0.9224 7.45091,-3.24856 10.95312,-5.27734 2.72861,-3.30412 0.38682,-9.20932 -3.91406,-9.62305 -6.48258,-0.64986 -13.14332,-0.96481 -19.25241,-3.447 -2.3335,-0.68942 -5.17643,0.25182 -6.29022,2.5022 -0.67401,1.12142 -2.22338,2.26654 -3.48984,1.32804 -2.24243,-1.50835 -3.48972,-4.0427 -5.58146,-5.72847 -1.57818,-1.42876 -3.36639,-2.6159 -5.26498,-3.57469 0.21224,0.57422 0.42448,1.14844 0.63672,1.72265 z" fill="#e3e3e3"></path>
+  <a class="xdio" href="javascript:sso('wag');" xlink:href="javascript:sso('wag');" tabindex="26"><path d="m 368.41797,309.90039 c -1.05958,1.84018 0.63063,3.67436 0.76158,5.52452 0.54283,3.15451 0.28484,6.36607 0.12514,9.54189 -0.60985,1.44272 -1.2553,3.44908 0.10156,4.67968 3.92592,3.35496 9.25162,4.12451 14.22078,4.5434 2.8321,0.2836 5.67477,0.6654 8.3925,1.54254 2.32585,2.39332 2.78704,5.84186 3.47461,8.95899 -0.32675,0.94005 1.13205,2.18018 1.79492,1.17187 1.27815,-2.51025 1.01822,-5.44613 0.78533,-8.15721 -0.91433,-5.95035 -4.50525,-11.09024 -5.46337,-17.03212 -0.70221,-2.78265 -3.46269,-4.26435 -5.83676,-5.45186 -3.77261,-1.75778 -7.71849,-3.16953 -11.75668,-4.18107 -2.11863,-0.50894 -4.26379,-0.90399 -6.42383,-1.18946 z" fill="#d8d9c9"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="352.48575" y="323.22894"><tspan sodipodi:role="line" x="352.48575" y="323.22894">Wagga</tspan><tspan sodipodi:role="line" x="352.48575" y="336.56232">Wagga</tspan></text></a>
+  <a class="xdio" href="javascript:sso('bat');" xlink:href="javascript:sso('bat');" tabindex="11"><path d="m 403.72266,268.75977 c -1.87686,0.46029 -2.29675,3.04668 -1.20313,4.43945 1.03773,2.622 3.06742,5.22561 2.32705,8.20133 -1.86089,7.81807 -3.68764,15.64513 -5.3251,23.51351 0.006,1.98409 1.84456,3.60928 3.76368,3.7168 2.94805,1.36944 5.58708,3.29401 8.44531,4.82812 1.97125,-0.67762 3.42109,-2.75289 3.20898,-4.85351 1.39098,-7.71965 7.01558,-14.29321 14.03711,-17.58594 0.20485,-1.00045 -1.06259,-1.8483 -1.93945,-1.38672 -1.19007,-0.19185 -2.02948,-1.62649 -1.50586,-2.74023 0.0475,-1.0438 0.17297,-2.12347 -0.16602,-3.13477 -1.40094,-0.5051 -2.91192,-0.34159 -4.36914,-0.31445 -0.96222,0.99825 -2.77211,-0.70797 -1.8164,-1.7207 1.26605,-1.69878 2.8112,-3.18972 3.88476,-5.0293 -0.45499,-1.85281 -1.32878,-3.5595 -2.07031,-5.30664 -2.67009,-1.73588 -5.98517,-1.55725 -8.99039,-2.20474 -2.74771,-0.32795 -5.51442,-0.46185 -8.28109,-0.42221 z" fill="#e0e0c9"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="384.66537" y="284.11938"><tspan sodipodi:role="line" x="384.66537" y="284.11938">Bathurst</tspan></text></a>
+  <a class="xdio" href="javascript:sso('cg');" xlink:href="javascript:sso('cg');" tabindex="14"><path d="m 381.59766,299.47461 c -2.58412,0.72048 -3.71725,3.4331 -4.53516,5.73437 -0.48852,1.26872 -1.06867,2.51321 -1.35938,3.84766 1.33038,1.33167 3.33933,1.42308 4.93892,2.28551 3.78224,1.44304 7.62641,2.88953 10.95562,5.24183 1.80335,0.46443 2.493,2.50389 2.41984,4.18077 0.69115,4.84565 2.45434,9.45362 4.42201,13.90499 1.15514,3.81921 1.15921,7.90526 0.48237,11.81268 0.77555,3.32431 3.73089,5.38391 6.04035,7.63517 2.47792,2.1135 5.13895,3.99625 7.76824,5.91366 1.25363,0.51589 2.7905,-0.66093 2.64258,-2.00195 1.37049,-4.64155 3.94791,-8.78088 6.2832,-12.97852 -1.11077,-1.68279 -3.39255,-1.63102 -4.87578,-2.82109 -1.59421,-0.84594 -3.16542,-1.7529 -4.59297,-2.8625 -1.56167,-6.44022 -0.25047,-13.07657 0.91016,-19.46485 0.24937,-2.11645 -1.09823,-4.37075 -3.17578,-4.97656 -3.05791,-2.28092 -6.3115,-4.3113 -9.77149,-5.92578 -0.81288,-0.68033 -1.48261,-1.50806 -2.11523,-2.35352 -2.01945,-0.82001 -4.55008,0.52433 -6.29883,-1.10156 -2.93172,-2.31185 -5.66874,-5.23911 -9.44922,-6.08398 -0.23017,-0.008 -0.45975,-0.002 -0.68945,0.0137 z" fill="#c3b59b"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="415.556" y="352.33658"><tspan x="415.556" y="352.33658" sodipodi:role="line">Canberra &amp; Goulburn</tspan></text></a>
+  <a class="xdio" href="javascript:sso('par');" xlink:href="javascript:sso('par');" tabindex="19"><path d="m 436.24023,291.00391 c -6.46435,1.04103 -12.91155,4.30094 -16.43554,10 -1.82015,3.03635 -2.46121,6.66943 -2.1875,10.17187 2.69067,1.5505 6.18035,0.78016 8.4651,-1.15534 3.00717,-2.00298 6.06101,-3.93646 9.17552,-5.76849 1.07957,-1.08215 0.80609,-2.76495 0.99028,-4.15354 0.11538,-2.72721 0.0527,-5.50676 0.83199,-8.15114 0.0242,-0.45263 -0.27932,-1.11092 -0.83985,-0.94336 z" fill="#dfded8"></path>
+  <text transform="translate(4.7758 7)" xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none" x="367.38461" y="300.44424"><tspan x="367.38461" y="300.44424" sodipodi:role="line">Parramatta</tspan></text></a>
+  <path d="m312.19 359.15c-3.9725-2.118-12.122-14.405-12.16-18.334-0.0332-3.4281-1.5868-7.5188-3.6325-9.5644-1.0997-1.0997-1.4302-2.6369-1.059-4.9247 0.58984-3.6348-1.0762-4.5471-3.3345-1.826-1.5906 1.9165-5.8914 1.9467-6.6206 0.0464-0.30679-0.79949 0.15733-2.4746 1.0314-3.7225 1.6503-2.3561 2.0272-5.5189 0.9822-8.2421-0.91627-2.3878-2.393-1.8967-2.393 0.79577 0 4.1776-2.254 5.1998-13 5.8958-3.1271 0.20253-3.5-0.0397-3.5-2.2733 0-1.8826 0.89853-2.9394 3.6386-4.2792 2.9589-1.4468 3.8446-2.597 4.741-6.1569l1.1023-4.3778 7.6778-0.0789c9.4173-0.0968 16.34 2.7004 16.34 6.6022 0 3.3215 2.6474 9.2645 4.199 9.4262 0.71557 0.0745 3.204 0.21497 5.5298 0.31207 2.3258 0.0971 4.5758 0.52289 5 0.94619 0.4242 0.42331 0.9045 9.9579 1.0673 21.188 0.32427 22.364 0.48897 21.819-5.61 18.568z" fill="#e3e3e3"></path>
+  <path d="m358.6 367.26c-0.32878-0.32877-0.59777-1.6212-0.59777-2.8721 0-3.332-1.5471-3.7325-3.4137-0.88376-0.89784 1.3703-2.0721 2.4914-2.6094 2.4914-1.351 0-1.2276-6.3557 0.18357-9.453 0.87155-1.9128 0.87689-3.1695 0.0214-5.047l-1.1391-2.5h12.824c11.567 0 13.002 0.19663 14.639 2.0061 0.99854 1.1034 1.6308 2.1742 1.405 2.3797-1.9276 1.7541-12.03 5.9931-14.411 6.0467-2.7173 0.0611-3.0288 0.4128-3.3052 3.7317-0.28116 3.375-2.1696 5.5276-3.597 4.1002z" fill="#e3e3e3"></path>
+  <path d="m335 368.45c-3.575-1.8762-8.2261-3.709-10.336-4.073-2.1096-0.36395-3.9899-1.1606-4.1784-1.7702s-0.53033-13.298-0.75958-28.197l-0.41682-27.088 5.0953 0.46645c6.5216 0.59702 8.4176 1.6228 9.2214 4.9891 0.94558 3.9604 2.0773 5.0005 4.862 4.4682 1.9482-0.37241 2.6792 0.0627 3.432 2.0428 0.52611 1.3838 1.4343 2.8112 2.0182 3.1721 0.58392 0.36088 1.0617 1.6067 1.0617 2.7684 0 1.1617 0.70836 2.895 1.5741 3.8516 2.0458 2.2606 3.5177 12.798 2.1039 15.062-0.76735 1.2287-0.61396 2.7914 0.5698 5.805 1.4149 3.6019 1.4436 4.5452 0.22753 7.4558-0.80146 1.9182-1.1529 4.8072-0.82822 6.8081 0.47873 2.9501 0.14951 3.802-2.1764 5.6315-1.5072 1.1856-3.2423 2.1248-3.8556 2.0871-0.61333-0.0377-4.0401-1.6036-7.6151-3.4798z" fill="#e3e3e3"></path>
+  <path d="m 393.88281,349.66602 c -9.35218,3.1945 -17.68002,8.75646 -27.02343,11.97265 -2.30053,-0.0734 -3.84839,2.54249 -3.26145,4.62785 0.13042,4.31074 3.38301,8.20472 7.47629,9.40536 2.33715,-0.12424 3.36835,-2.71075 5.48035,-3.37309 2.43975,-1.02469 5.14822,-1.40379 7.38784,-2.89366 1.8551,-1.01878 3.43227,-2.52008 4.50384,-4.34037 1.21321,-1.28709 3.16274,-1.21171 4.74396,-0.82014 6.3887,0.43009 12.81237,0.93193 19.20823,0.34522 1.07056,-0.54466 0.70481,-2.35867 -0.41406,-2.60546 -5.79559,-4.26008 -11.25204,-9.10009 -17.75,-12.29688 -0.11264,-0.009 -0.2382,-0.0772 -0.35157,-0.0215 z" fill="#e3e3e3"></path>
+ </g>
+ <a class="xdio" href="javascript:sso('hq');" xlink:href="javascript:sso('hq');" tabindex="15"><image alt="CEnet" width="262" height="33" x="20" y="400" xlink:href="bycenet.png"></image></a>
+</svg></div></div>
+    
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
